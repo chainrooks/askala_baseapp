@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "askala_baseapp_backend": {
+      "main": "src/askala_baseapp_backend/main.mo",
+      "type": "motoko"
+    },
+    "askala_baseapp_frontend": {
+      "dependencies": [
+        "askala_baseapp_backend"
+      ],
+      "source": [
+        "src/askala_baseapp_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "askala_baseapp_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
