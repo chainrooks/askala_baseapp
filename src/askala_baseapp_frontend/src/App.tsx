@@ -1,31 +1,24 @@
 import { FormEvent, useState } from 'react';
 import { askala_baseapp_backend } from '../../declarations/askala_baseapp_backend'
+import { Button } from './components/ui/button';
+import { MainContent } from './section/main-content';
+import { TTopicProps } from './types/topic';
+import { ChatHistory, ChatMessage } from './types/global';
 
 function App() {
-  const [greeting, setGreeting] = useState<string>('');
+  const [selectedTopic, setSelectedTopic] = useState<TTopicProps | null>(null);
+  const [chatHistory, setChatHistory] = useState<ChatHistory>({});
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const nameInput = form.elements.namedItem('name') as HTMLInputElement;
-    const name = nameInput?.value || '';
 
-    askala_baseapp_backend.greet(name).then((greeting: string) => {
-      setGreeting(greeting);
-    });
-  }
+  const handleTopicSelect = (topic: TTopicProps) => {
+    setSelectedTopic(topic);
+  };
 
   return (
     <main>
-      <img src="/logo2.svg" alt="DFINITY logo" />
-      <br />
-      <br />
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" name="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
-      <section id="greeting">{greeting}</section>
+      <MainContent 
+        selectedTopic={selectedTopic}
+      />
     </main>
   );
 }

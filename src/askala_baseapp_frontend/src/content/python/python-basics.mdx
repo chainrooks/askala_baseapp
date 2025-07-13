@@ -1,0 +1,168 @@
+# Python Basics
+
+Welcome to Python programming! Python is a high-level, interpreted programming language known for its simplicity and readability.
+
+## What is Python?
+
+Python was created by Guido van Rossum and first released in 1991. It's designed to be easy to read and write, making it an excellent choice for beginners and experienced programmers alike.
+
+### Key Features:
+- **Simple and Easy to Learn**: Clean syntax that emphasizes readability
+- **Interpreted**: No need to compile before running
+- **Cross-platform**: Runs on Windows, macOS, and Linux
+- **Large Standard Library**: Batteries included philosophy
+
+## Variables and Data Types
+
+In Python, you don't need to declare variable types explicitly. Python is dynamically typed.
+
+### Basic Data Types
+
+```python
+# Strings
+name = "Alice"
+message = 'Hello, World!'
+
+# Numbers
+age = 25
+height = 5.9
+temperature = -10
+
+# Booleans
+is_student = True
+is_working = False
+
+# None type
+result = None
+```
+
+### Variable Naming Rules
+
+1. Must start with a letter or underscore
+2. Can contain letters, numbers, and underscores
+3. Case-sensitive (`name` and `Name` are different)
+4. Cannot use Python keywords
+
+```python
+# Good variable names
+user_name = "john_doe"
+total_score = 100
+is_valid = True
+
+# Bad variable names (avoid these)
+# 2name = "invalid"  # Starts with number
+# class = "Python"   # Uses keyword
+```
+
+## Basic Operations
+
+### Arithmetic Operations
+
+```python
+# Basic arithmetic
+a = 10
+b = 3
+
+addition = a + b        # 13
+subtraction = a - b     # 7
+multiplication = a * b  # 30
+division = a / b        # 3.333...
+floor_division = a // b # 3
+modulus = a % b         # 1
+exponentiation = a ** b # 1000
+```
+
+### String Operations
+
+```python
+first_name = "John"
+last_name = "Doe"
+
+# String concatenation
+full_name = first_name + " " + last_name
+print(full_name)  # Output: John Doe
+
+# String formatting (f-strings - Python 3.6+)
+age = 25
+message = f"My name is {full_name} and I am {age} years old."
+print(message)
+
+# String methods
+text = "Hello, World!"
+print(text.upper())      # HELLO, WORLD!
+print(text.lower())      # hello, world!
+print(text.replace("World", "Python"))  # Hello, Python!
+```
+
+## Input and Output
+
+### Getting User Input
+
+```python
+# Getting input from user
+name = input("What's your name? ")
+age = input("How old are you? ")
+
+# Converting input to numbers
+age_number = int(age)
+height = float(input("Enter your height in meters: "))
+
+print(f"Hello {name}, you are {age_number} years old!")
+```
+
+### Printing Output
+
+```python
+# Basic print
+print("Hello, World!")
+
+# Print multiple values
+name = "Alice"
+age = 30
+print("Name:", name, "Age:", age)
+
+# Print with separator
+print("apple", "banana", "cherry", sep=", ")
+
+# Print without newline
+print("Loading", end="")
+print("...", end="")
+print("Done!")
+```
+
+## Practice Exercises
+
+Try these exercises to practice what you've learned:
+
+1. **Personal Information**: Create variables for your name, age, and favorite color, then print them in a formatted message.
+
+2. **Calculator**: Write a simple calculator that takes two numbers and performs basic arithmetic operations.
+
+3. **Temperature Converter**: Convert temperature from Celsius to Fahrenheit using the formula: F = (C × 9/5) + 32
+
+```python
+# Exercise 1 Solution
+name = "Your Name"
+age = 25
+favorite_color = "blue"
+print(f"Hi, I'm {name}, I'm {age} years old, and my favorite color is {favorite_color}.")
+
+# Exercise 2 Solution
+num1 = float(input("Enter first number: "))
+num2 = float(input("Enter second number: "))
+print(f"Sum: {num1 + num2}")
+print(f"Difference: {num1 - num2}")
+print(f"Product: {num1 * num2}")
+if num2 != 0:
+    print(f"Division: {num1 / num2}")
+```
+
+## Next Steps
+
+Now that you understand Python basics, you're ready to move on to:
+- Data Structures (lists, dictionaries, sets, tuples)
+- Control Flow (if statements, loops)
+- Functions
+- Object-Oriented Programming
+
+Keep practicing and experimenting with the code examples!
