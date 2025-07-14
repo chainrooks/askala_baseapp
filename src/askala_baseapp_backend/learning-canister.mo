@@ -1,7 +1,7 @@
 import Time "mo:base/Time";
 import Array "mo:base/Array";
 
-actor LearningManager {
+actor class LearningManager() {
     stable var lessons : [LessonMetadata] = [];
 
     type LessonMetadata = {
