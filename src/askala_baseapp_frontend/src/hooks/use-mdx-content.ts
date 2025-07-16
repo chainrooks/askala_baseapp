@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { TCourseProps } from "../types/course";
+import type { TTopicProps } from "@/types/topic";
 
-export const useMDXContent = (topic: TCourseProps | null) => {
+export const useMDXContent = (topic: TTopicProps | null) => {
 	const [MDXComponent, setMDXComponent] = useState<React.ComponentType | null>(
 		null
 	);
@@ -21,9 +21,12 @@ export const useMDXContent = (topic: TCourseProps | null) => {
 			try {
 				// Map topic IDs to their corresponding MDX files
 				const contentMap: { [key: string]: () => Promise<any> } = {
-					"python-basics": () => import("../content/python/python-basics.mdx"),
-					"data-structures": () =>
-						import("../content/python/data-structures.mdx"),
+					"for_loops": () => import("../content/python/for_loops.md"),
+					"functions": () => import("../content/python/functions.md"),
+					"if_else": () => import("../content/python/if_else.md"),
+					"python_list": () => import("../content/python/python_list.md"),
+					"python_variables": () => import("../content/python/python_variables.md"),
+					"while": () => import("../content/python/while.md")
 				};
 
 				const loader = contentMap[topic.id];

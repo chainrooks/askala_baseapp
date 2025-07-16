@@ -1,15 +1,6 @@
 import React from "react";
 import type { TTopicProps } from "@/types/topic";
-import type { ChatMessage } from "@/types/global";
 import { Brain, FileText, Loader2 } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
 import { useMDXContent } from "@/hooks/use-mdx-content";
 
 interface MainContentProps {
@@ -18,71 +9,36 @@ interface MainContentProps {
 
 export const MainContent: React.FC<MainContentProps> = ({ selectedTopic }) => {
 	const { MDXComponent, loading, error } = useMDXContent(selectedTopic);
+
 	const getWelcomeContent = () => {
 		if (!selectedTopic) {
 			return (
 				<div className="text-center py-12">
 					<FileText className="w-16 h-16 mx-auto mb-6 text-blue-400" />
-					<h1 className="text-3xl font-bold text-foreground mb-4">
+					<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
 						Welcome to Python Learning
 					</h1>
-					<p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-						Select a topic from the sidebar to begin your Python learning
-						journey. Our AI assistant will help you understand complex concepts
-						through interactive conversations.
+					<p className="text-gray-500 dark:text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
+						Select a topic from the sidebar to begin your Python learning journey.
+						Our AI assistant will help you understand complex concepts through interactive conversations.
 					</p>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-						<Card>
-							<CardHeader>
-								<CardTitle className="text-xl">
-									🐍 Python Fundamentals
-								</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<CardDescription>
-									Learn Python from basics to advanced concepts with hands-on
-									examples
-								</CardDescription>
-							</CardContent>
-						</Card>
-						<Card>
-							<CardHeader>
-								<CardTitle className="text-xl">💬 AI Assistant</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<CardDescription>
-									Ask questions about Python concepts and get detailed
-									explanations
-								</CardDescription>
-							</CardContent>
-						</Card>
-						<Card>
-							<CardHeader>
-								<CardTitle className="text-xl">📖 Rich Content</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<CardDescription>
-									Interactive content with code examples, exercises, and best
-									practices
-								</CardDescription>
-							</CardContent>
-						</Card>
-						<Card>
-							<CardHeader>
-								<CardTitle className="text-xl">📝 Chat History</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<CardDescription>
-									Track your questions and learning progress for each topic
-								</CardDescription>
-							</CardContent>
-						</Card>
+						{[
+							{ title: "🐍 Python Fundamentals", desc: "Learn Python from basics to advanced concepts with hands-on examples" },
+							{ title: "💬 AI Assistant", desc: "Ask questions about Python concepts and get detailed explanations" },
+							{ title: "📖 Rich Content", desc: "Interactive content with code examples, exercises, and best practices" },
+							{ title: "📝 Chat History", desc: "Track your questions and learning progress for each topic" },
+						].map((card, i) => (
+							<div key={i} className="p-4 border rounded-lg shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700">
+								<h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{card.title}</h3>
+								<p className="text-gray-600 dark:text-gray-400 text-sm">{card.desc}</p>
+							</div>
+						))}
 					</div>
 				</div>
 			);
 		}
-
-		return null; // Will be handled by MDX content
+		return null;
 	};
 
 	const renderContent = () => {
@@ -94,7 +50,7 @@ export const MainContent: React.FC<MainContentProps> = ({ selectedTopic }) => {
 			return (
 				<div className="flex items-center justify-center py-12">
 					<Loader2 className="w-8 h-8 animate-spin text-blue-400 mr-3" />
-					<span className="text-muted-foreground">Loading content...</span>
+					<span className="text-gray-500 dark:text-gray-400">Loading content...</span>
 				</div>
 			);
 		}
@@ -102,75 +58,57 @@ export const MainContent: React.FC<MainContentProps> = ({ selectedTopic }) => {
 		if (error) {
 			return (
 				<div className="text-center py-12">
-					<Card className="bg-destructive/10 border-destructive/30 max-w-md mx-auto">
-						<CardHeader>
-							<CardTitle className="text-destructive">
-								Error Loading Content
-							</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<CardDescription className="text-destructive/80">
-								{error}
-							</CardDescription>
-						</CardContent>
-					</Card>
+					<div className="bg-red-100 dark:bg-red-900 border border-red-300 dark:border-red-700 max-w-md mx-auto p-6 rounded-lg">
+						<h3 className="text-red-700 dark:text-red-300 font-semibold text-lg mb-2">Error Loading Content</h3>
+						<p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+					</div>
 				</div>
 			);
 		}
 
 		if (MDXComponent) {
 			return (
-				<div className="prose prose-invert prose-slate max-w-none ">
+				<div className="prose prose-invert prose-slate max-w-none">
 					<MDXComponent />
 				</div>
 			);
 		}
 
-		// Fallback for topics without MDX content
 		return (
 			<div className="text-center py-12">
 				<FileText className="w-16 h-16 mx-auto mb-6 text-yellow-400" />
-				<h1 className="text-3xl font-bold text-foreground mb-4">
+				<h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
 					{selectedTopic.title}
 				</h1>
-				<p className="text-muted-foreground text-lg mb-8">
+				<p className="text-gray-500 dark:text-gray-400 text-lg mb-8">
 					{selectedTopic.description}
 				</p>
-				<Card className="max-w-2xl mx-auto">
-					<CardContent className="pt-6">
-						<p className="text-muted-foreground mb-4">
-							Content for this topic is coming soon! In the meantime, you can:
-						</p>
-						<ul className="text-muted-foreground text-left space-y-2">
-							<li>
-								• Ask questions about <strong>{selectedTopic.title}</strong> in
-								the chat
-							</li>
-							<li>
-								• Get explanations and code examples from our AI assistant
-							</li>
-							<li>
-								• Explore other topics that have detailed content available
-							</li>
-						</ul>
-					</CardContent>
-				</Card>
+				<div className="max-w-2xl mx-auto p-6 border rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700">
+					<p className="text-gray-500 dark:text-gray-400 mb-4">
+						Content for this topic is coming soon! In the meantime, you can:
+					</p>
+					<ul className="text-left space-y-2 text-gray-600 dark:text-gray-400 text-sm">
+						<li>• Ask questions about <strong>{selectedTopic.title}</strong> in the chat</li>
+						<li>• Get explanations and code examples from our AI assistant</li>
+						<li>• Explore other topics that have detailed content available</li>
+					</ul>
+				</div>
 			</div>
 		);
 	};
 
 	return (
-		<div className="flex-1 bg-background flex flex-col h-full">
-			<div className="border-b p-4">
+		<div className="flex-1 bg-white dark:bg-gray-900 flex flex-col h-full">
+			<div className="border-b p-4 dark:border-gray-700">
 				<div className="flex items-center gap-3">
 					<Brain className="w-6 h-6 text-blue-400" />
 					<div>
-						<h1 className="text-xl font-semibold text-foreground">
+						<h1 className="text-xl font-semibold text-gray-900 dark:text-white">
 							{selectedTopic
 								? selectedTopic.title
 								: "Python Learning Assistant"}
 						</h1>
-						<p className="text-sm text-muted-foreground">
+						<p className="text-sm text-gray-500 dark:text-gray-400">
 							{selectedTopic
 								? selectedTopic.description
 								: "Master Python programming from basics to advanced concepts"}
@@ -179,11 +117,11 @@ export const MainContent: React.FC<MainContentProps> = ({ selectedTopic }) => {
 				</div>
 			</div>
 
-			<ScrollArea className="flex-1 overflow-y-auto">
+			<div className="flex-1 overflow-y-auto">
 				<div className="p-6">
 					<div className="max-w-4xl mx-auto space-y-6">{renderContent()}</div>
 				</div>
-			</ScrollArea>
+			</div>
 		</div>
 	);
 };
