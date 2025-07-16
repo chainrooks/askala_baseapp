@@ -1,6 +1,10 @@
 import Time "mo:base/Time";
 
 module {
+    public type User = {
+        id : Principal;		
+    };
+
     public type LessonMetadataInput = {
         slug: Text;
         title: Text;
@@ -24,5 +28,12 @@ module {
         version: Nat;
         createdAt: Time.Time;
         updatedAt: Time.Time;
+    };
+
+    public type UserProgress = {
+        lessonId: LessonMetadata;
+        userId: User;
+        progress: Nat;
+        lastUpdated: Time.Time;
     };
 }
