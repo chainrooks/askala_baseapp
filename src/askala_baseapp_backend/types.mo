@@ -36,4 +36,10 @@ module {
         progress: Nat;
         lastUpdated: Time.Time;
     };
+
+    public type UserProgressInput = {
+        lessonId: Text;
+        userId: Principal;
+        progress: Nat;
+    };
 }

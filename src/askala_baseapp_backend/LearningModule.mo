@@ -73,8 +73,8 @@ module {
             };
         };
 
-        public func addUserProgress(lessonId: Text, userId: Principal, progress: Nat) : async () {
-            let lessonMetadataOpt = getLessonMetadataById(lessonId);
+        public func addUserProgress(userProgressInput: Types.UserProgressInput) : async () {
+            let lessonMetadataOpt = getLessonMetadataById(userProgressInput.lessonId);
 
             switch (lessonMetadataOpt) {
                 case (null) {
@@ -84,8 +84,8 @@ module {
                 case (?lessonMetadata) {
                     let _userProgress: Types.UserProgress = {
                         lessonId = lessonMetadata;
-                        userId = { id = userId;}; 
-                        progress = progress;
+                        userId = { id = userProgressInput.userId;}; 
+                        progress = userProgressInput.progress;
                         lastUpdated = Time.now();
                     };
 
