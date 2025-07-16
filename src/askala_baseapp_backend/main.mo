@@ -3,7 +3,7 @@ import Types "types";
 import LearningModule "LearningModule";
 
  actor {
-        private let learningService = LearningModule.LearningService();
+    private let learningService = LearningModule.LearningService();
 
     public query func getLessonMetadataById(lessonId: Text) : async ?Types.LessonMetadata {
         learningService.getLessonMetadataById(lessonId);
@@ -25,7 +25,7 @@ import LearningModule "LearningModule";
         message.caller;
     };
         
-    public shared func addUserProgress(lessonId: Text, userId: Principal, progress: Nat) : async () {
-        await learningService.addUserProgress(lessonId, userId, progress);
+    public shared func addUserProgress(userProgress: Types.UserProgressInput) : async () {
+        await learningService.addUserProgress(userProgress);
     }; 
 };
