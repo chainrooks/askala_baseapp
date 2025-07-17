@@ -9,10 +9,16 @@
     "prebuild": "npm run prebuild --workspaces --if-present",
     "pretest": "npm run prebuild --workspaces --if-present",
     "start": "npm start --workspaces --if-present",
-    "test": "npm test --workspaces --if-present"
+    "test": "npm test --workspaces --if-present",
+    "deploy:metadata": "dfx deploy --network ic --argument '(null)'",
+    "verify:deployment": "dfx canister --network ic call askala_baseapp_backend verify_deployment"
   },
   "type": "module",
   "workspaces": [
     "src/askala_baseapp_frontend"
-  ]
+  ],
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "glob": "^11.0.3"
+  }
 }

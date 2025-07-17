@@ -27,9 +27,7 @@ module {
                 slug = lesson.slug;
                 title = lesson.title;
                 description = lesson.description;
-                tags = lesson.tags;
-                difficulty = lesson.difficulty;
-                estimatedTime = lesson.estimatedTime;
+                code = lesson.code;                                          
                 contentHash = lesson.contentHash;
                 version = lesson.version;
                 createdAt = Time.now();
@@ -53,9 +51,7 @@ module {
                         slug = lesson.slug;
                         title = lesson.title;
                         description = lesson.description;
-                        tags = lesson.tags;
-                        difficulty = lesson.difficulty;
-                        estimatedTime = lesson.estimatedTime;
+                        code = lesson.code;                                          
                         contentHash = lesson.contentHash;
                         version = lesson.version;
                         createdAt = existingLesson.createdAt;

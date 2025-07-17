@@ -1,10 +1,13 @@
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
-const { globSync } = require('glob');
+import { readFileSync, existsSync, mkdirSync, writeFileSync,  } from 'fs';
+import { basename, dirname } from 'path';
+import { createHash } from 'crypto';
+import { globSync } from 'glob';
+import fs from 'fs';
+import path from 'path';
+import crypto from 'crypto';
 
 class ContentHashGenerator {
-    constructor(contentDir = 'src/content/lessons') {
+    constructor(contentDir = 'src/askala_baseapp_frontend/src/content/python') {
         this.contentDir = contentDir;
         this.outputFile = 'src/generated/content-registry.ts';
         this.metadataFile = 'deployment/lesson-metadata.json';
@@ -33,13 +36,10 @@ class ContentHashGenerator {
             if (key && valueParts.length > 0) {
                 const value = valueParts.join(':').trim();
 
-                // Handle different data types
                 if (key === 'tags') {
                     metadata[key] = value.split(',').map(tag => tag.trim());
                 } else if (key === 'estimatedTime') {
                     metadata[key] = parseInt(value);
-                } else if (key === 'difficulty') {
-                    metadata[key] = value.replace(/['"]/g, '');
                 } else {
                     metadata[key] = value.replace(/['"]/g, '');
                 }
@@ -54,38 +54,33 @@ class ContentHashGenerator {
         const lessonFiles = globSync(`${this.contentDir}/**/*.md`);
         const contentRegistry = {};
         const lessonMetadata = [];
-
-        console.log('🔄 Generating content hashes...');
+        
+        console.log(`🔄 Generating content registry for ${lessonFiles.length} lessons...`);
+        // console.log('🔄 Generating content hashes...');
 
         for (const filePath of lessonFiles) {
+            console.log(`🔍 Reading file: ${filePath}`);
             const content = fs.readFileSync(filePath, 'utf8');
             const slug = path.basename(filePath, '.md');
 
-            // Generate hash
             const contentHash = this.generateHash(content);
-
-            // Extract metadata
             const metadata = this.extractMetadata(content, filePath);
-
-            // Content registry for frontend
+            
+            console.log(`🔍 Processing ${slug}...`)                        
             contentRegistry[slug] = {
-                path: `./lessons/${path.basename(filePath)}`,
+                path: `src/askala_baseapp_frontend/src/content/python/${path.basename(filePath)}`,
                 hash: contentHash,
-                version: 1,
+                version: metadata.version || '1.0',
                 size: Buffer.byteLength(content, 'utf8')
-            };
+            };            
 
-            // Metadata for backend
-            const lessonMeta = {
-                id: slug,
+            const lessonMeta = {                
                 slug: slug,
                 title: metadata.title || slug,
-                description: metadata.description || '',
-                tags: metadata.tags || [],
-                difficulty: metadata.difficulty || 'beginner',
-                estimatedTime: metadata.estimatedTime || 10,
+                description: metadata.description || '',                
+                code: metadata.code || '',
                 contentHash: contentHash,
-                version: 1,
+                version: metadata.version || '1.0',
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             };
@@ -94,38 +89,34 @@ class ContentHashGenerator {
             console.log(`✅ ${slug}: ${contentHash.substring(0, 8)}...`);
         }
 
-        // Generate TypeScript content registry
         await this.generateTypeScriptRegistry(contentRegistry);
-
-        // Generate metadata JSON for backend deployment
         await this.generateMetadataFile(lessonMetadata);
 
         console.log(`📝 Generated registry for ${lessonFiles.length} lessons`);
         return { contentRegistry, lessonMetadata };
     }
 
-    // Generate TypeScript registry file
+    // Write TypeScript registry file
     async generateTypeScriptRegistry(contentRegistry) {
         const registryContent = `// Auto-generated content registry
-// Do not edit manually
+                // Do not edit manually
 
-export interface ContentRegistryEntry {
-  path: string;
-  hash: string;
-  version: number;
-  size: number;
-}
+                export interface ContentRegistryEntry {
+                path: string;
+                hash: string;
+                version: string
+                size: number;
+                }
 
-export const CONTENT_REGISTRY: Record<string, ContentRegistryEntry> = ${JSON.stringify(contentRegistry, null, 2)} as const;
+                export const CONTENT_REGISTRY: Record<string, ContentRegistryEntry> = ${JSON.stringify(contentRegistry, null, 2)} as const;
 
-export const CONTENT_HASHES = {
-${Object.entries(contentRegistry).map(([slug, entry]) =>
-            `  '${slug}': '${entry.hash}'`
-        ).join(',\n')}
-} as const;
-`;
+                export const CONTENT_HASHES = {
+                ${Object.entries(contentRegistry).map(([slug, entry]) =>
+                            `  '${slug}': '${entry.hash}'`
+                        ).join(',\n')}
+                } as const;
+        `;
 
-        // Ensure directory exists
         const dir = path.dirname(this.outputFile);
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });
@@ -135,7 +126,7 @@ ${Object.entries(contentRegistry).map(([slug, entry]) =>
         console.log(`📄 Generated: ${this.outputFile}`);
     }
 
-    // Generate metadata file for backend deployment
+    // Write JSON metadata for backend
     async generateMetadataFile(lessonMetadata) {
         const metadataContent = {
             lessons: lessonMetadata,
@@ -143,7 +134,6 @@ ${Object.entries(contentRegistry).map(([slug, entry]) =>
             totalLessons: lessonMetadata.length
         };
 
-        // Ensure directory exists
         const dir = path.dirname(this.metadataFile);
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });
@@ -153,17 +143,15 @@ ${Object.entries(contentRegistry).map(([slug, entry]) =>
         console.log(`📋 Generated: ${this.metadataFile}`);
     }
 
-    // Validate content integrity
+    // Optional validation
     validateContentIntegrity(contentRegistry) {
         const issues = [];
-
+        
         for (const [slug, entry] of Object.entries(contentRegistry)) {
-            // Check if file exists
             if (!fs.existsSync(entry.path)) {
                 issues.push(`❌ Missing file: ${entry.path} for lesson ${slug}`);
             }
 
-            // Validate hash format
             if (!/^[a-f0-9]{64}$/.test(entry.hash)) {
                 issues.push(`❌ Invalid hash format for lesson ${slug}`);
             }
@@ -178,3 +166,15 @@ ${Object.entries(contentRegistry).map(([slug, entry]) =>
         console.log('✅ Content validation passed');
     }
 }
+
+// ===== Entry Point =====
+(async () => {
+    try {
+        const generator = new ContentHashGenerator();
+        const { contentRegistry } = await generator.generateContentRegistry();
+        generator.validateContentIntegrity(contentRegistry);
+        console.log('🔧 Content hash generation script is ready to use.');
+    } catch (error) {
+        console.error('🚨 Error:', error.message);
+    }
+})();

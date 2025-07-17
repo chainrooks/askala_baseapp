@@ -9,11 +9,9 @@ module {
         slug: Text;
         title: Text;
         description: Text;
-        tags: [Text];
-        difficulty: Text;
-        estimatedTime: Nat;
+        code: Text;
         contentHash: Text;
-        version: Nat;
+        version: Text;
     };
 
     public type LessonMetadata = {
@@ -21,11 +19,9 @@ module {
         slug: Text;
         title: Text;
         description: Text;
-        tags: [Text];
-        difficulty: Text;
-        estimatedTime: Nat;
+        code: Text;
         contentHash: Text;
-        version: Nat;
+        version: Text;
         createdAt: Time.Time;
         updatedAt: Time.Time;
     };
