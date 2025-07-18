@@ -1,11 +1,10 @@
-// deploy-scripts/deploy-to-motoko.js
-const { execSync } = require('child_process');
-const fs = require('fs');
+import fs from 'fs';
+import { execSync } from 'child_process';
 
 class MotokoDeployment {
     constructor() {
         this.metadataFile = 'deployment/lesson-metadata.json';
-        this.canisterName = 'learning_manager';
+        this.canisterName = 'askala_baseapp_backend';
         this.network = process.env.DFX_NETWORK || 'local';
     }
 
@@ -17,8 +16,9 @@ class MotokoDeployment {
 
         // Convert to Motoko format
         const motokoData = this.convertToMotokoFormat(metadata.lessons);
-
-        console.log(`📋 Deploying ${motokoData.length} lessons to canister: ${this.canisterName}`);
+        
+        // console.log(`📋 Deploying ${motokoData.length} lessons to canister: ${this.canisterName}`);
+        console.log(`📋 Deploying ${metadata.lessons.length} lessons to canister: ${this.canisterName}`);
 
         try {
             // 🔥 CALL KE MOTOKO CANISTER - Method 1: Bulk Update
@@ -40,18 +40,20 @@ class MotokoDeployment {
         console.log('📡 Bulk updating lessons...');
 
         // Convert array to Motoko format
-        const motokoArray = lessons.map(lesson => this.formatLessonForMotoko(lesson));
+        const motokoRecords = lessons.map(lesson => this.formatLessonForMotoko(lesson));
+
+        const candidArg = `vec {${motokoRecords.join('; ')}}`;
 
         // DFX command untuk call function di Motoko
         const command = [
             'dfx', 'canister', 'call',
             '--network', this.network,
             this.canisterName,
-            'bulkUpdateLessonMetadata',
-            `'(${JSON.stringify(motokoArray)})'`
+            'bulkUpdateOrCreateLessonMetadata',
+            `'(${candidArg})'`
         ].join(' ');
 
-        console.log('🔧 Executing:', command);
+        // console.log('🔧 Executing:', command);
         execSync(command, { stdio: 'inherit' });
     }
 
@@ -60,15 +62,15 @@ class MotokoDeployment {
         console.log('📡 Updating lessons individually...');
 
         for (const lesson of lessons) {
-            const motokoLesson = this.formatLessonForMotoko(lesson);
+            const motokoFormatted = this.formatLessonForMotoko(lesson);
 
-            // DFX command untuk update individual lesson
+            // // DFX command untuk update individual lesson
             const command = [
                 'dfx', 'canister', 'call',
                 '--network', this.network,
                 this.canisterName,
-                'updateLessonMetadata',
-                `'("${lesson.slug}", ${JSON.stringify(motokoLesson)})'`
+                'updateOrCreateLessonMetadata',
+                `'${motokoFormatted}'`
             ].join(' ');
 
             console.log(`📝 Updating lesson: ${lesson.slug}`);
@@ -91,49 +93,39 @@ class MotokoDeployment {
         return result.trim();
     }
 
-    // Format lesson untuk Motoko
     formatLessonForMotoko(lesson) {
-        return {
-            id: `"${lesson.id}"`,
-            slug: `"${lesson.slug}"`,
-            title: `"${lesson.title}"`,
-            description: `"${lesson.description}"`,
-            tags: `[${lesson.tags.map(tag => `"${tag}"`).join(', ')}]`,
-            difficulty: `"${lesson.difficulty}"`,
-            estimatedTime: lesson.estimatedTime,
-            contentHash: `"${lesson.contentHash}"`,
-            version: lesson.version,
-            createdAt: `"${lesson.createdAt}"`,
-            updatedAt: `"${lesson.updatedAt}"`
-        };
+        return `(record {
+        slug = "${lesson.slug}";
+        title = "${lesson.title}";
+        code = "${lesson.code}";
+        description = "${lesson.description}";
+        contentHash = "${lesson.contentHash}";
+        version = "${lesson.version}";
+        createdAt = "${lesson.createdAt}";
+        updatedAt = "${lesson.updatedAt}";
+        })`;
     }
 
-    // Parse Motoko result dari string ke object
-    parseMotokResult(result) {
-        try {
-            // Motoko returns dalam format khusus, perlu parsing
-            // Contoh: (opt record { id = "javascript-basics"; title = "JavaScript Basics"; ... })
-
-            // Simple parsing untuk demo - sesuaikan dengan format actual Motoko
-            const cleanResult = result.replace(/opt\s+/g, '').replace(/record\s+/g, '');
-            return JSON.parse(cleanResult);
-
-        } catch (error) {
-            console.error('Failed to parse Motoko result:', result);
-            return null;
-        }
+    formatBulkLessonForMotoko(lesson) {
+            return `record {
+            slug = "${lesson.slug}";
+            title = "${lesson.title}";
+            code = "${lesson.code}";
+            description = "${lesson.description}";
+            contentHash = "${lesson.contentHash}";
+            version = "${lesson.version}";
+            createdAt = "${lesson.createdAt}";
+            updatedAt = "${lesson.updatedAt}";
+        }`;
     }
 
     // Convert JavaScript metadata to Motoko format
     convertToMotokoFormat(lessons) {
-        return lessons.map(lesson => ({
-            id: lesson.id,
+        return lessons.map(lesson => ({            
             slug: lesson.slug,
             title: lesson.title,
             description: lesson.description,
-            tags: lesson.tags,
-            difficulty: lesson.difficulty,
-            estimatedTime: lesson.estimatedTime,
+            code : lesson.code,
             contentHash: lesson.contentHash,
             version: lesson.version,
             createdAt: lesson.createdAt,
@@ -141,3 +133,14 @@ class MotokoDeployment {
         }));
     }
 }
+
+// ===== Entry Point =====
+(async () => {
+    try {
+        const motokoDeployment = new MotokoDeployment();
+        motokoDeployment.deployMetadata();
+        console.log('🔧 Deployment ...');
+    } catch (error) {
+        console.error('🚨 Error:', error.message);
+    }
+})();

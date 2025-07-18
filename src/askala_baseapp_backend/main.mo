@@ -20,6 +20,13 @@ import LearningModule "LearningModule";
     public func updateOrCreateLessonMetadata(lesson: Types.LessonMetadataInput) : async () {
         await learningService.updateOrCreateLessonMetadata(lesson);
     };
+
+    public func bulkUpdateOrCreateLessonMetadata(lessonsInput: [Types.LessonMetadataInput]) : async () {
+        for (lesson in lessonsInput.vals()) {
+            await updateOrCreateLessonMetadata(lesson);
+        };
+    };
+
     
     public query (message) func whoami() : async Principal {
         message.caller;

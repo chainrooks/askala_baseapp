@@ -10,6 +10,7 @@
     "pretest": "npm run prebuild --workspaces --if-present",
     "start": "npm start --workspaces --if-present",
     "test": "npm test --workspaces --if-present",
+    "generate:content-hash": "node build-scripts/generate-content-hash.js",
     "deploy:metadata": "dfx deploy --network ic --argument '(null)'",
     "verify:deployment": "dfx canister --network ic call askala_baseapp_backend verify_deployment"
   },
