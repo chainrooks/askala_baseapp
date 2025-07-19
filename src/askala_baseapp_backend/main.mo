@@ -1,5 +1,4 @@
 import Principal "mo:base/Principal";
-import LearningModule "LearningModule";
 import Types "types";
 import GenerateId "generate-id";
 import Time "mo:base/Time";
