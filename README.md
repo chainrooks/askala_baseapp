@@ -1,3 +1,14 @@
+<div style="display:flex;flex-direction:column;">
+  <a href="#">
+    <img src="./src/askala_baseapp_frontend/public/logo-background.png" alt="ASKALA Logo" role="presentation"/>
+  </a>
+
+<br/>
+<br/>
+
+[![Internet Computer portal](https://img.shields.io/badge/Internet-Computer-grey?logo=internet%20computer)](https://internetcomputer.org)
+</div>
+
 # Askala BaseApp
 
 Askala BaseApp is an AI-powered learning platform built on the Internet Computer (ICP) using Motoko for the backend and React + Vite for the frontend. It provides interactive Python learning content, secure authentication via Internet Identity, and tracks user progress.
@@ -14,48 +25,32 @@ Askala BaseApp is an AI-powered learning platform built on the Internet Computer
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v20+)
+- [Node.js](https://nodejs.org/) (v22+)
 - [DFX SDK](https://internetcomputer.org/docs/current/developer-docs/setup/install) (for ICP development)
-- [npm](https://www.npmjs.com/) (v7+)
+- [npm](https://www.npmjs.com/) (v11+)
 
-### 1. Clone the Repository
+1. **Clone the Repository**
 
 ```sh
 git clone https://github.com/chainrooks/askala_baseapp.git
 cd askala_baseapp
 ```
 
-### 2. Install Dependencies
+2. **Install Dependencies**
 
 ```sh
 npm install
 ```
 
-### 3. Start the Local ICP Replica
+3. **Start the Local ICP Replica**
 
 ```sh
 dfx start --background
 ```
 
-### 4. Deploy Canisters & Generate Declarations
-
+4. **Deploy Local**
 ```sh
-npm run setup
-```
-
-### 5. Start the Frontend Development Server
-
-```sh
-npm start
-```
-
-- The frontend will be available at [http://localhost:3000](http://localhost:3000)
-- The backend canister runs locally at [http://localhost:4943](http://localhost:4943)
-
-### 6. Build for Production
-
-```sh
-npm run build
+dfx deploy --network=local
 ```
 
 ## Content & Deployment Workflow
@@ -64,31 +59,16 @@ npm run build
    Update lesson content or metadata as needed (MDX files, lesson registry, dsb).
 
 2. **Generate Hash**  
-   Jalankan script untuk menghasilkan hash konten dan metadata:
+   Run the script to generate hashes of content and metadata::
    ```sh
-   npm run build:hash
+   npm run build:content-hash
    ```
 
-3. **Update Registry**  
-   Pastikan registry dan metadata sudah terupdate:
+2. **Deploy Metadata To Backend Canister**  
+   Run the script to deploy content to the canister backend
    ```sh
-   npm run build:registry
+   npm run deploy:metadata
    ```
-
-4. **Build Frontend**  
-   Build ulang frontend agar perubahan konten tercermin:
-   ```sh
-   npm run build
-   ```
-
-5. **Deploy Metadata**  
-   Deploy metadata ke backend canister:
-   ```sh
-   dfx deploy
-   ```
-
-6. **Verify Success**  
-   Cek aplikasi di browser dan pastikan perubahan sudah tampil.
 
 ---
 
@@ -100,13 +80,6 @@ Workflow ini memastikan setiap perubahan konten terintegrasi dengan backend dan 
 - `src/askala_baseapp_frontend/` – React frontend code
 - `build-scripts/` – Scripts for content registry and deployment
 - `deployment/` – Generated lesson metadata for backend
-
-## Useful Commands
-
-- `npm run build` – Build the project
-- `npm run setup` – Install, create canisters, generate declarations, deploy
-- `npm start` – Start frontend dev server
-- `dfx deploy` – Deploy canisters to local replica
 
 ## Learn More
 
