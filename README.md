@@ -36,6 +36,16 @@ While Askala currently serves the frontend from traditional infrastructure, it c
 - **📡 (Upcoming) HTTP Outcalls (Optional Enhancement)**
 Askala may later integrate HTTP outcalls—allowing canisters to directly fetch external data (e.g., AI inference results or third-party content) from off-chain APIs. This can further decentralize backend logic and reduce reliance on frontend requests.
 
+## Technical Architecture
+
+## Overview
+<div style="display:flex;flex-direction:column;">
+  <a href="#">
+    <img src="./src/askala_baseapp_frontend/public/images/techical-architecture.png" alt="ASKALA Logo" role="presentation"/>
+  </a>
+
+<br/>
+<br/>
 
 ## Local Development Setup
 
@@ -71,8 +81,10 @@ dfx deploy --network=local
 
 ## Content & Deployment Workflow
 
+![alt text](/src/askala_baseapp_frontend/public/images/content-flow.png)
+
 1. **Content Change**  
-   Update lesson content or metadata as needed (MDX files, lesson registry, dsb).
+   Update lesson content or metadata as needed (MDX files, lesson registry).
 
 2. **Generate Hash**  
    Run the script to generate hashes of content and metadata::
@@ -87,6 +99,13 @@ dfx deploy --network=local
    ```
 
 ---
+
+## AI Local Developement
+
+see [Askala AI Repository](https://github.com/chainrooks/askala_ai)
+
+
+
 
 ## Project Structure
 
