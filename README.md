@@ -11,7 +11,7 @@
 
 # Askala BaseApp
 
-Askala BaseApp is an AI-powered learning platform built on the Internet Computer (ICP) using Motoko for the backend and React + Vite for the frontend. It provides interactive Python learning content, secure authentication via Internet Identity, and tracks user progress.
+**Askala BaseApp** is an AI-powered learning platform built on the **Internet Computer Protocol (ICP)** using **Motoko** for the backend and **React + Vite** for the frontend. It delivers interactive Python learning modules, secure authentication, and progress tracking—fully decentralized and verifiable.
 
 ## Features
 
@@ -20,6 +20,22 @@ Askala BaseApp is an AI-powered learning platform built on the Internet Computer
 - Tracks user progress per lesson
 - AI-powered chat assistant for each topic
 - Modern UI with Tailwind CSS
+
+## ICP Building Blocks Used
+Askala leverages key components of ICP technology to create a secure, decentralized learning experience:
+
+- **🔐 Internet Identity (II)**
+Askala uses Internet Identity (II), a privacy-preserving passwordless authentication system built on BLS threshold signatures and WebAuthn.  ➡️ This enables seamless and secure login for students without relying on a centralized identity provider.
+
+- **🧠 On-chain Smart Contracts with Motoko**
+The lesson metadata, user profiles, and progress tracking are all stored and managed directly in Motoko-based canister smart contracts—running on-chain with low latency and high throughput.Lessons are stored as structured metadata records (title, slug, tags, hash, etc.) Users’ learning history is maintained in persistent on-chain storage All updates (e.g., progress changes) are verified and recorded immutably.
+
+- **🌐 Hosting Frontend on ICP (optional/extendable)**
+While Askala currently serves the frontend from traditional infrastructure, it can be extended to serve the full React+Vite frontend directly from the chain—leveraging ICP’s low-latency, low-cost storage.
+
+- **📡 (Upcoming) HTTP Outcalls (Optional Enhancement)**
+Askala may later integrate HTTP outcalls—allowing canisters to directly fetch external data (e.g., AI inference results or third-party content) from off-chain APIs. This can further decentralize backend logic and reduce reliance on frontend requests.
+
 
 ## Local Development Setup
 
@@ -71,8 +87,6 @@ dfx deploy --network=local
    ```
 
 ---
-
-Workflow ini memastikan setiap perubahan konten terintegrasi dengan backend dan frontend secara konsisten.
 
 ## Project Structure
 
