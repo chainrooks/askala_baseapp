@@ -11,7 +11,7 @@
     "start": "npm start --workspaces --if-present",
     "test": "npm test --workspaces --if-present",
     "build:content-hash": "node build-scripts/generate-content-hash.js",
-    "deploy:metadata": "dfx build-scripts/deploy-metadata.js"    
+    "deploy:metadata": "node build-scripts/deploy-metadata.js"    
   },
   "type": "module",
   "workspaces": [
