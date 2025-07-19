@@ -7,7 +7,8 @@ module {
      public class LearningService() {
         private var lessons : [Types.LessonMetadata] = [];
         private var userProgress : [Types.UserProgress] = [];
-
+        
+        /// Returns the lesson metadata if found, otherwise returns null.
         public func getLessonMetadataById(lessonId: Text) : ?Types.LessonMetadata {
             for (lesson in lessons.vals()) {
                 if (lesson.id == lessonId) {
@@ -17,10 +18,13 @@ module {
             return null;
         };
 
+        /// Returns all lesson metadata stored in the service.
         public func getAllLessons() : [Types.LessonMetadata] {
             return lessons;
         };
 
+        /// Adds a new lesson metadata entry to the lessons array.
+        /// Generates a unique ID and timestamps for the lesson.
         public func addLessonMetadata(lesson: Types.LessonMetadataInput) : async () {        
             let entry: Types.LessonMetadata = {
                 id = await GenerateId.generateId();
@@ -37,6 +41,8 @@ module {
             lessons := Array.append<Types.LessonMetadata>(lessons, [entry]);
         };
 
+        /// Updates an existing lesson metadata by slug, or creates a new one if not found.
+        /// Updates timestamps and lesson fields.
         public func updateOrCreateLessonMetadata(lesson: Types.LessonMetadataInput) : async () {
             let existingLessonOpt = getLessonMetadataById(lesson.slug);
 
@@ -69,6 +75,8 @@ module {
             };
         };
 
+        /// Adds user progress for a specific lesson.
+        /// Only adds progress if the lesson exists.
         public func addUserProgress(userProgressInput: Types.UserProgressInput) : async () {
             let lessonMetadataOpt = getLessonMetadataById(userProgressInput.lessonId);
 
