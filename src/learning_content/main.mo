@@ -5,9 +5,10 @@ import Time "mo:base/Time";
 
 actor LearningContent{
     stable var _lessons : [Types.LessonMetadata] = [];
+    stable var _userProgress : [Types.UserProgress] = [];
 
     /// Returns the lesson metadata if found, otherwise returns null.
-    public query func getLessonMetadataById(lessonId: Text) : async ?Types.LessonMetadata {
+    public shared query func getLessonMetadataById(lessonId: Text) : async ?Types.LessonMetadata {
         for (lesson in _lessons.vals()) {
                 if (lesson.id == lessonId) {
                     return ?lesson;

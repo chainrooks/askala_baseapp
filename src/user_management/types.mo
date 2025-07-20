@@ -1,6 +1,6 @@
 
 module {
-    type User = {
+    public type User = {
         id: Principal;        
     };
 }

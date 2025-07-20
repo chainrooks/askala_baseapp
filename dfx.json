@@ -8,6 +8,13 @@
       "main": "src/learning_content/main.mo",
       "type": "motoko"
     },
+    "progress": {
+      "main": "src/progress/main.mo",
+      "type": "motoko",
+      "dependencies": [        
+        "learning_content"
+      ]
+    },
     "askala_baseapp_frontend": {
       "dependencies": [
         "backend"
