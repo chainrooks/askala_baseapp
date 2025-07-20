@@ -18,6 +18,10 @@
     "src/askala_baseapp_frontend"
   ],
   "dependencies": {
+    "@vitejs/plugin-react": "^4.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.14",
     "fs": "^0.0.1-security",
     "glob": "^11.0.3"
   }
