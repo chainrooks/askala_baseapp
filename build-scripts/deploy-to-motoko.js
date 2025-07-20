@@ -4,7 +4,7 @@ import { execSync } from 'child_process';
 class MotokoDeployment {
     constructor() {
         this.metadataFile = 'deployment/lesson-metadata.json';
-        this.canisterName = 'askala_baseapp_backend';
+        this.canisterName = 'backend';
         this.network = process.env.DFX_NETWORK || 'local';
     }
 
