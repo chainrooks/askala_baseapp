@@ -108,5 +108,15 @@ import Array "mo:base/Array";
                     _userProgress := Array.append<Types.UserProgress>(_userProgress, [userProgressData]);
                 };
             };        
-    }; 
+    };
+
+    public func getUserProgess(userId: Principal, lessonId: Text) : async ?Types.UserProgress {
+        for (progress in _userProgress.vals()) {
+            if (Principal.equal(progress.userId.id, userId) and progress.lessonId.id == lessonId) {
+                return ?progress;
+            };
+        };
+
+        return null;
+    };
 };
