@@ -9,11 +9,9 @@ module {
         slug: Text;
         title: Text;
         description: Text;
-        tags: [Text];
-        difficulty: Text;
-        estimatedTime: Nat;
+        code: Text;
         contentHash: Text;
-        version: Nat;
+        version: Text;
     };
 
     public type LessonMetadata = {
@@ -21,11 +19,9 @@ module {
         slug: Text;
         title: Text;
         description: Text;
-        tags: [Text];
-        difficulty: Text;
-        estimatedTime: Nat;
+        code: Text;
         contentHash: Text;
-        version: Nat;
+        version: Text;
         createdAt: Time.Time;
         updatedAt: Time.Time;
     };
@@ -35,5 +31,11 @@ module {
         userId: User;
         progress: Nat;
         lastUpdated: Time.Time;
+    };
+
+    public type UserProgressInput = {
+        lessonId: Text;
+        userId: Principal;
+        progress: Nat;
     };
 }

@@ -1,12 +1,16 @@
 {
   "canisters": {
-    "askala_baseapp_backend": {
-      "main": "src/askala_baseapp_backend/main.mo",
+    "backend": {
+      "main": "src/backend/main.mo",
+      "type": "motoko"
+    },
+    "learning_content": {
+      "main": "src/learning_content/main.mo",
       "type": "motoko"
     },
     "askala_baseapp_frontend": {
       "dependencies": [
-        "askala_baseapp_backend"
+        "backend"
       ],
       "source": [
         "src/askala_baseapp_frontend/dist"
