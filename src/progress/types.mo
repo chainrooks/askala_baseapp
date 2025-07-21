@@ -15,4 +15,9 @@ module {
         userId: Principal;
         progress: Nat;
     };
+
+    public type GetUserProgressInput = {
+        lessonId: Text;
+        userId: Principal;        
+    };
 }

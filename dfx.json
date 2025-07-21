@@ -15,6 +15,10 @@
         "learning_content"
       ]
     },
+    "user_management": {
+      "main": "src/user_management/main.mo",
+      "type": "motoko"
+    },
     "askala_baseapp_frontend": {
       "dependencies": [
         "backend"
