@@ -1,9 +1,5 @@
 {
   "canisters": {
-    "backend": {
-      "main": "src/backend/main.mo",
-      "type": "motoko"
-    },
     "learning_content": {
       "main": "src/learning_content/main.mo",
       "type": "motoko"
