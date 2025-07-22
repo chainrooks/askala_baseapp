@@ -109,7 +109,9 @@ see [Askala AI Repository](https://github.com/chainrooks/askala_ai)
 
 ## Project Structure
 
-- `src/askala_baseapp_backend/` – Motoko backend canister code
+- `src/learning_content/` – Motoko learning content canister code
+- `src/progress/` – Motoko progess canister code
+- `src/user_management/` – Motoko user management canister code
 - `src/askala_baseapp_frontend/` – React frontend code
 - `build-scripts/` – Scripts for content registry and deployment
 - `deployment/` – Generated lesson metadata for backend
