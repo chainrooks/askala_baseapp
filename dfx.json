@@ -17,7 +17,9 @@
     },
     "askala_baseapp_frontend": {
       "dependencies": [
-        "backend"
+        "learning_content",
+        "user_management",
+        "progress"
       ],
       "source": [
         "src/askala_baseapp_frontend/dist"
