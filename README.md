@@ -73,7 +73,7 @@ npm install
 23 **Install Mops**
 
 ```sh
-mops sources
+mops sources && mops install 
 ```
 
 4. **Start the Local ICP Replica**
