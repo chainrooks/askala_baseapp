@@ -54,6 +54,7 @@ Askala may later integrate HTTP outcalls—allowing canisters to directly fetch 
 - [Node.js](https://nodejs.org/) (v22+)
 - [DFX SDK](https://internetcomputer.org/docs/current/developer-docs/setup/install) (for ICP development)
 - [npm](https://www.npmjs.com/) (v11+)
+- [mops](https://internetcomputer.org/docs/tutorials/developer-liftoff/level-3/3.1-package-managers) ()
 
 1. **Clone the Repository**
 
@@ -68,13 +69,20 @@ cd askala_baseapp
 npm install
 ```
 
-3. **Start the Local ICP Replica**
+
+23 **Install Mops**
+
+```sh
+mops sources && mops install 
+```
+
+4. **Start the Local ICP Replica**
 
 ```sh
 dfx start --background
 ```
 
-4. **Deploy Local**
+5. **Deploy Local**
 ```sh
 dfx deploy --network=local
 ```

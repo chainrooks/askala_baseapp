@@ -1,7 +1,7 @@
-import Types "../backend/types";
 import HashMap "mo:base/HashMap";
 import Principal "mo:base/Principal";
 import Iter "mo:base/Iter";
+import Types "types";
 
 actor UserManagement {
     // Private state (hanya bisa diakses oleh actor ini)
