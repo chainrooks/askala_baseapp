@@ -122,7 +122,7 @@ dfx deploy --network=local
 
 ## Roadmap
 - [x] Implement ICP Account with LLM Chatbot
-- [ ] Deploy lesson engine with modular chat-based Q&A and memory for scalable growth
+- [ ] Build simple analytics dashboard for user engagement and lesson performance
 - [ ] Add multilingual content support (starting with Bahasa Indonesia & English)
 - [ ] Introduce freemium features, premium course tracks, and contributor token rewards.
 - [ ] Personalized tutoring via LLM with context-aware suggestions.
