@@ -59,6 +59,8 @@ Askala may later integrate HTTP outcalls—allowing canisters to directly fetch 
 <br/>
 <br/>
 
+This architecture uses ICP as the backend platform with several canisters: **FrontEnd**, **Lesson**, **Progress**, and **User**. React is used on the browser side as the UI. The **FrontEnd Canister** manages communication between canisters and performs HTTP outcalls to the Chat Bot, which is connected to an LLM API for AI.
+
 ## Local Development Setup
 
 ### Prerequisites
@@ -118,6 +120,10 @@ dfx deploy --network=local
    npm run deploy:metadata
    ```
 
+> **Note:**  
+> Make sure you have run the **Deploy Local** process (`dfx deploy --network=local`) first before following the steps in the **Content & Deployment Workflow** section below. 
+
+> It is important that the backend canister is up and ready to accept metadata or content changes.
 ---
 
 ## Roadmap
