@@ -13,6 +13,18 @@
 
 **Askala BaseApp** is an AI-powered learning platform built on the **Internet Computer Protocol (ICP)** using **Motoko** for the backend and **React + Vite** for the frontend. It delivers interactive Python learning modules, secure authentication, and progress tracking—fully decentralized and verifiable.
 
+## Table of Contents
+
+- [Features](#features)
+- [ICP Building Blocks Used](#icp-building-blocks-used)
+- [Technical Architecture](#technical-architecture)
+- [Overview](#overview)
+- [Local Development Setup](#local-development-setup)
+- [Content & Deployment Workflow](#content--deployment-workflow)
+- [AI Local Developement](#ai-local-developement)
+- [Roadmap](#Roadmap)
+- [Project Structure](#project-structure)
+
 ## Features
 
 - Interactive Python lessons with rich MDX content
@@ -107,6 +119,15 @@ dfx deploy --network=local
    ```
 
 ---
+
+## Roadmap
+- [x] Implement ICP Account with LLM Chatbot
+- [ ] Deploy lesson engine with modular chat-based Q&A and memory for scalable growth
+- [ ] Add multilingual content support (starting with Bahasa Indonesia & English)
+- [ ] Introduce freemium features, premium course tracks, and contributor token rewards.
+- [ ] Personalized tutoring via LLM with context-aware suggestions.
+- [ ] Reward learners via ICRC-1 token and issue DIP721 NFT credentials
+- [ ]  Enable discussion threads per lesson
 
 ## AI Local Developement
 
