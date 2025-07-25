@@ -13,6 +13,18 @@
 
 **Askala BaseApp** is an AI-powered learning platform built on the **Internet Computer Protocol (ICP)** using **Motoko** for the backend and **React + Vite** for the frontend. It delivers interactive Python learning modules, secure authentication, and progress tracking—fully decentralized and verifiable.
 
+## Table of Contents
+
+- [Features](#features)
+- [ICP Building Blocks Used](#icp-building-blocks-used)
+- [Technical Architecture](#technical-architecture)
+- [Overview](#overview)
+- [Local Development Setup](#local-development-setup)
+- [Content & Deployment Workflow](#content--deployment-workflow)
+- [AI Local Developement](#ai-local-developement)
+- [Roadmap](#Roadmap)
+- [Project Structure](#project-structure)
+
 ## Features
 
 - Interactive Python lessons with rich MDX content
@@ -47,6 +59,8 @@ Askala may later integrate HTTP outcalls—allowing canisters to directly fetch 
 <br/>
 <br/>
 
+This architecture uses ICP as the backend platform with several canisters: **FrontEnd**, **Lesson**, **Progress**, and **User**. React is used on the browser side as the UI. The **FrontEnd Canister** manages communication between canisters and performs HTTP outcalls to the Chat Bot, which is connected to an LLM API for AI.
+
 ## Local Development Setup
 
 ### Prerequisites
@@ -54,6 +68,7 @@ Askala may later integrate HTTP outcalls—allowing canisters to directly fetch 
 - [Node.js](https://nodejs.org/) (v22+)
 - [DFX SDK](https://internetcomputer.org/docs/current/developer-docs/setup/install) (for ICP development)
 - [npm](https://www.npmjs.com/) (v11+)
+- [mops](https://internetcomputer.org/docs/tutorials/developer-liftoff/level-3/3.1-package-managers) ()
 
 1. **Clone the Repository**
 
@@ -68,13 +83,20 @@ cd askala_baseapp
 npm install
 ```
 
-3. **Start the Local ICP Replica**
+
+23 **Install Mops**
+
+```sh
+mops sources && mops install 
+```
+
+4. **Start the Local ICP Replica**
 
 ```sh
 dfx start --background
 ```
 
-4. **Deploy Local**
+5. **Deploy Local**
 ```sh
 dfx deploy --network=local
 ```
@@ -98,7 +120,20 @@ dfx deploy --network=local
    npm run deploy:metadata
    ```
 
+> **Note:**  
+> Make sure you have run the **Deploy Local** process (`dfx deploy --network=local`) first before following the steps in the **Content & Deployment Workflow** section below. 
+
+> It is important that the backend canister is up and ready to accept metadata or content changes.
 ---
+
+## Roadmap
+- [x] Implement ICP Account with LLM Chatbot
+- [ ] Build simple analytics dashboard for user engagement and lesson performance
+- [ ] Add multilingual content support (starting with Bahasa Indonesia & English)
+- [ ] Introduce freemium features, premium course tracks, and contributor token rewards.
+- [ ] Personalized tutoring via LLM with context-aware suggestions.
+- [ ] Reward learners via ICRC-1 token and issue DIP721 NFT credentials
+- [ ]  Enable discussion threads per lesson
 
 ## AI Local Developement
 
