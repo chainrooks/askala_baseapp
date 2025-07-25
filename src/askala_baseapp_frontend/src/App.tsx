@@ -11,8 +11,8 @@ import { AuthClient } from '@dfinity/auth-client';
 import LoginPage from './section/auth/login-page';
 
 function App() {
+  const [messages, setMessages] = useState<ChatMessage[]>([])
   const [selectedTopic, setSelectedTopic] = useState<TTopicProps | null>(null);
-  const [chatHistory, setChatHistory] = useState<ChatHistory>({});
 
   const [authState, setAuthState] = useState<InternetIdentityState>({
     actor: undefined,
@@ -59,42 +59,6 @@ function App() {
     setSelectedTopic(topic);
   };
 
-  const handleSendMessage = (content: string) => {
-    if (!selectedTopic) return;
-
-    const userMessage: ChatMessage = {
-      id: `user-${Date.now()}`,
-      content,
-      sender: 'user',
-      timestamp: new Date(),
-      topicId: selectedTopic.id,
-    };
-
-    // Simulate AI response with a delay
-    // const aiResponse: ChatMessage = {
-    //   id: `ai-${Date.now()}`,
-    //   content: generateAIResponse(content, selectedTopic),
-    //   sender: 'ai',
-    //   timestamp: new Date(),
-    //   topicId: selectedTopic.id,
-    // };
-
-    setChatHistory(prev => ({
-      ...prev,
-      [selectedTopic.id]: [
-        ...(prev[selectedTopic.id] || []),
-        userMessage,
-        //aiResponse,
-      ],
-    }));
-  };
-
-  const getAllMessages = (): ChatMessage[] => {
-    return Object.values(chatHistory).flat().sort((a, b) => 
-      a.timestamp.getTime() - b.timestamp.getTime()
-    );
-  };
-
   if (!authState.isAuthenticated) {
     return <LoginPage state={authState} setState={setAuthState} />;
   }
@@ -115,8 +79,8 @@ function App() {
 
         <ChatPanel
           selectedTopic={selectedTopic}
-          messages={getAllMessages()}
-          onSendMessage={handleSendMessage}
+          messages={messages}
+          setMessages={setMessages}
         />
       </div>
     </main>

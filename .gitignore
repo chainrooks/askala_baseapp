@@ -25,3 +25,7 @@ dist/
 .env
 
 .mops
+
+/deployment
+
+src/generated/

@@ -1,59 +1,152 @@
-# `askala_baseapp`
+<div style="display:flex;flex-direction:column;">
+  <a href="#">
+    <img src="./src/askala_baseapp_frontend/public/logo-background.png" alt="ASKALA Logo" role="presentation"/>
+  </a>
 
-Welcome to your new `askala_baseapp` project and to the Internet Computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+<br/>
+<br/>
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+[![Internet Computer portal](https://img.shields.io/badge/Internet-Computer-grey?logo=internet%20computer)](https://internetcomputer.org)
+</div>
 
-To learn more before you start working with `askala_baseapp`, see the following documentation available online:
+# Askala BaseApp
 
-- [Quick Start](https://internetcomputer.org/docs/current/developer-docs/setup/deploy-locally)
-- [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/setup/install)
-- [Motoko Programming Language Guide](https://internetcomputer.org/docs/current/motoko/main/motoko)
-- [Motoko Language Quick Reference](https://internetcomputer.org/docs/current/motoko/main/language-manual)
+**Askala BaseApp** is an AI-powered learning platform built on the **Internet Computer Protocol (ICP)** using **Motoko** for the backend and **React + Vite** for the frontend. It delivers interactive Python learning modules, secure authentication, and progress tracking—fully decentralized and verifiable.
 
-If you want to start working on your project right away, you might want to try the following commands:
+## Table of Contents
 
-```bash
-cd askala_baseapp/
-dfx help
-dfx canister --help
+- [Features](#features)
+- [ICP Building Blocks Used](#icp-building-blocks-used)
+- [Technical Architecture](#technical-architecture)
+- [Overview](#overview)
+- [Local Development Setup](#local-development-setup)
+- [Content & Deployment Workflow](#content--deployment-workflow)
+- [AI Local Developement](#ai-local-developement)
+- [Roadmap](#Roadmap)
+- [Project Structure](#project-structure)
+
+## Features
+
+- Interactive Python lessons with rich MDX content
+- Secure login using Internet Identity
+- Tracks user progress per lesson
+- AI-powered chat assistant for each topic
+- Modern UI with Tailwind CSS
+
+## ICP Building Blocks Used
+Askala leverages key components of ICP technology to create a secure, decentralized learning experience:
+
+- **🔐 Internet Identity (II)**
+Askala uses Internet Identity (II), a privacy-preserving passwordless authentication system built on BLS threshold signatures and WebAuthn.  ➡️ This enables seamless and secure login for students without relying on a centralized identity provider.
+
+- **🧠 On-chain Smart Contracts with Motoko**
+The lesson metadata, user profiles, and progress tracking are all stored and managed directly in Motoko-based canister smart contracts—running on-chain with low latency and high throughput.Lessons are stored as structured metadata records (title, slug, tags, hash, etc.) Users’ learning history is maintained in persistent on-chain storage All updates (e.g., progress changes) are verified and recorded immutably.
+
+- **🌐 Hosting Frontend on ICP (optional/extendable)**
+While Askala currently serves the frontend from traditional infrastructure, it can be extended to serve the full React+Vite frontend directly from the chain—leveraging ICP’s low-latency, low-cost storage.
+
+- **📡 (Upcoming) HTTP Outcalls (Optional Enhancement)**
+Askala may later integrate HTTP outcalls—allowing canisters to directly fetch external data (e.g., AI inference results or third-party content) from off-chain APIs. This can further decentralize backend logic and reduce reliance on frontend requests.
+
+## Technical Architecture
+
+## Overview
+<div style="display:flex;flex-direction:column;">
+  <a href="#">
+    <img src="./src/askala_baseapp_frontend/public/images/techical-architecture.png" alt="ASKALA Logo" role="presentation"/>
+  </a>
+
+<br/>
+<br/>
+
+This architecture uses ICP as the backend platform with several canisters: **FrontEnd**, **Lesson**, **Progress**, and **User**. React is used on the browser side as the UI. The **FrontEnd Canister** manages communication between canisters and performs HTTP outcalls to the Chat Bot, which is connected to an LLM API for AI.
+
+## Local Development Setup
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v22+)
+- [DFX SDK](https://internetcomputer.org/docs/current/developer-docs/setup/install) (for ICP development)
+- [npm](https://www.npmjs.com/) (v11+)
+- [mops](https://internetcomputer.org/docs/tutorials/developer-liftoff/level-3/3.1-package-managers) ()
+
+1. **Clone the Repository**
+
+```sh
+git clone https://github.com/chainrooks/askala_baseapp.git
+cd askala_baseapp
 ```
 
-## Running the project locally
+2. **Install Dependencies**
 
-If you want to test your project locally, you can use the following commands:
+```sh
+npm install
+```
 
-```bash
-# Starts the replica, running in the background
+
+23 **Install Mops**
+
+```sh
+mops sources && mops install 
+```
+
+4. **Start the Local ICP Replica**
+
+```sh
 dfx start --background
-
-# Deploys your canisters to the replica and generates your candid interface
-dfx deploy
 ```
 
-Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
-
-If you have made changes to your backend canister, you can generate a new candid interface with
-
-```bash
-npm run generate
+5. **Deploy Local**
+```sh
+dfx deploy --network=local
 ```
 
-at any time. This is recommended before starting the frontend development server, and will be run automatically any time you run `dfx deploy`.
+## Content & Deployment Workflow
 
-If you are making frontend changes, you can start a development server with
+![alt text](/src/askala_baseapp_frontend/public/images/content-flow.png)
 
-```bash
-npm start
-```
+1. **Content Change**  
+   Update lesson content or metadata as needed (MDX files, lesson registry).
 
-Which will start a server at `http://localhost:8080`, proxying API requests to the replica at port 4943.
+2. **Generate Hash**  
+   Run the script to generate hashes of content and metadata::
+   ```sh
+   npm run build:content-hash
+   ```
 
-### Note on frontend environment variables
+2. **Deploy Metadata To Backend Canister**  
+   Run the script to deploy content to the canister backend
+   ```sh
+   npm run deploy:metadata
+   ```
 
-If you are hosting frontend code somewhere without using DFX, you may need to make one of the following adjustments to ensure your project does not fetch the root key in production:
+> **Note:**  
+> Make sure you have run the **Deploy Local** process (`dfx deploy --network=local`) first before following the steps in the **Content & Deployment Workflow** section below. 
 
-- set`DFX_NETWORK` to `ic` if you are using Webpack
-- use your own preferred method to replace `process.env.DFX_NETWORK` in the autogenerated declarations
-  - Setting `canisters -> {asset_canister_id} -> declarations -> env_override to a string` in `dfx.json` will replace `process.env.DFX_NETWORK` with the string in the autogenerated declarations
-- Write your own `createActor` constructor
+> It is important that the backend canister is up and ready to accept metadata or content changes.
+---
+
+## Roadmap
+- [x] Implement ICP Account with LLM Chatbot
+- [ ] Build simple analytics dashboard for user engagement and lesson performance
+- [ ] Add multilingual content support (starting with Bahasa Indonesia & English)
+- [ ] Introduce freemium features, premium course tracks, and contributor token rewards.
+- [ ] Personalized tutoring via LLM with context-aware suggestions.
+- [ ] Reward learners via ICRC-1 token and issue DIP721 NFT credentials
+- [ ]  Enable discussion threads per lesson
+
+## AI Local Developement
+
+see [Askala AI Repository](https://github.com/chainrooks/askala_ai)
+
+
+
+
+## Project Structure
+
+- `src/learning_content/` – Motoko learning content canister code
+- `src/progress/` – Motoko progess canister code
+- `src/user_management/` – Motoko user management canister code
+- `src/askala_baseapp_frontend/` – React frontend code
+- `build-scripts/` – Scripts for content registry and deployment
+- `deployment/` – Generated lesson metadata for backend

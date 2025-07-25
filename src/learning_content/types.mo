@@ -1,19 +1,14 @@
 import Time "mo:base/Time";
+import Types "../user_management/types";
 
 module {
-    public type User = {
-        id : Principal;		
-    };
-
-    public type LessonMetadataInput = {
+        public type LessonMetadataInput = {
         slug: Text;
         title: Text;
         description: Text;
-        tags: [Text];
-        difficulty: Text;
-        estimatedTime: Nat;
+        code: Text;
         contentHash: Text;
-        version: Nat;
+        version: Text;
     };
 
     public type LessonMetadata = {
@@ -21,18 +16,16 @@ module {
         slug: Text;
         title: Text;
         description: Text;
-        tags: [Text];
-        difficulty: Text;
-        estimatedTime: Nat;
+        code: Text;
         contentHash: Text;
-        version: Nat;
+        version: Text;
         createdAt: Time.Time;
         updatedAt: Time.Time;
     };
 
     public type UserProgress = {
         lessonId: LessonMetadata;
-        userId: User;
+        userId: Types.User;
         progress: Nat;
         lastUpdated: Time.Time;
     };
