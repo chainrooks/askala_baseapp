@@ -17,19 +17,19 @@ export const SideContent: React.FC<SidebarProps> = ({
 }) => {
 
 	return (
-		<div className="w-80 bg-gray-200 border-r border-gray-300 flex flex-col h-full">
-			<div className="p-6 border-b border-gray-300">
-				<h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
-					<BookOpen className="w-5 h-5 text-gray-500" />
+		<div className="w-80 bg-gray-900 border-r border-gray-700 flex flex-col h-full">
+			<div className="p-6 border-b border-gray-700">
+				<h2 className="text-xl font-semibold text-white flex items-center gap-2">
+					<BookOpen className="w-5 h-5 text-gray-400" />
 					Askala Learning
 				</h2>
-				<p className="text-sm text-gray-600 mt-1">
+				<p className="text-sm text-gray-400 mt-1">
 					Master your skills from beginner to advance with the power of AI.
 				</p>
 			</div>
 
 			<button
-				className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 hover:border-destructive/30 w-full justify-start"
+				className="text-gray-400 hover:text-red-400 hover:bg-red-900/20 w-full justify-start p-3 text-left"
 				onClick={async () => await onLogout()}
 			>
 				Logout
@@ -45,14 +45,14 @@ export const SideContent: React.FC<SidebarProps> = ({
 								onClick={() => onTopicSelect(topic)}
 								className={`w-full text-left h-auto p-3 rounded-md transition-all duration-200 ${
 									isSelected
-										? "bg-gray-300 text-gray-800"
-										: "text-gray-600 hover:bg-gray-200"
+										? "bg-gray-800 text-white"
+										: "text-gray-400 hover:bg-gray-800"
 								}`}
 							>
 								<div className="font-medium text-sm">{topic.title}</div>
 								<div
 									className={`text-xs mt-1 ${
-										isSelected ? "text-gray-800" : "text-gray-500"
+										isSelected ? "text-white" : "text-gray-400"
 									}`}
 								>
 									{topic.description}

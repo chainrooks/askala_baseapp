@@ -1,4 +1,4 @@
-import Types "../backend/types";
+import Types "./types";
 import HashMap "mo:base/HashMap";
 import Principal "mo:base/Principal";
 import Iter "mo:base/Iter";
