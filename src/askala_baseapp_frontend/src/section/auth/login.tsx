@@ -1,4 +1,3 @@
-import React from "react";
 import { Brain, Globe, Sparkles } from "lucide-react";
 import type { TLogin } from "@/types/auth";
 

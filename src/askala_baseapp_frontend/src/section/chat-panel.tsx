@@ -96,14 +96,14 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
     : [];
 
   return (
-    <div className="w-80 bg-white border-l flex flex-col h-full dark:bg-gray-900 dark:border-gray-700">
-      <div className="p-4 border-b dark:border-gray-700">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+    <div className="w-80 bg-gray-900 border-l flex flex-col h-full border-gray-700">
+      <div className="p-4 border-b border-gray-700">
+        <h3 className="text-lg font-semibold text-white flex items-center gap-2">
           <MessageCircle className="w-5 h-5 text-emerald-400" />
           Chat
         </h3>
         {selectedTopic && (
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-sm text-gray-400 mt-1">
             Topic: {selectedTopic.title}
           </p>
         )}
@@ -135,26 +135,26 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
               {topicMessages.map((message) => (
                 <div
                   key={message.id}
-                  className={`rounded-lg px-4 py-3 text-sm ${
+                  className={`rounded-lg px-4 py-3 text-sm overflow-hidden ${
                     message.sender === "user"
                       ? "bg-blue-600 text-white ml-4"
-                      : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white mr-4"
+                      : "bg-gray-800 text-white mr-4"
                   }`}
                 >
                   {message.sender === "ai" ? (
-                    <div className="prose prose-sm max-w-none dark:prose-invert">
+                    <div className="prose prose-sm max-w-none prose-invert [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_code]:break-all [&_code]:whitespace-pre-wrap [&_pre_code]:break-normal [&_pre_code]:whitespace-pre">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>
                         {message.content}
                       </ReactMarkdown>
                     </div>
                   ) : (
-                    <p className="whitespace-pre-wrap">{message.content}</p>
+                    <p className="whitespace-pre-wrap break-words">{message.content}</p>
                   )}
                   <div
                     className={`flex items-center gap-1 mt-2 text-xs ${
                       message.sender === "user"
                         ? "text-white/70"
-                        : "text-gray-500 dark:text-gray-400"
+                        : "text-gray-400"
                     }`}
                   >
                     <Clock className="w-3 h-3" />
@@ -169,7 +169,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
         </div>
       </div>
 
-      <div className="p-4 border-t dark:border-gray-700">
+      <div className="p-4 border-t border-gray-700">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <input
             type="text"
@@ -180,7 +180,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
               selectedTopic ? "Ask about this topic..." : "Select a topic first"
             }
             disabled={!selectedTopic}
-            className="flex-1 px-3 py-2 border rounded-md text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 disabled:opacity-50"
+            className="flex-1 px-3 py-2 border rounded-md text-sm bg-gray-800 text-white border-gray-600 disabled:opacity-50"
           />
           <button
             type="submit"
@@ -191,7 +191,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           </button>
         </form>
         {selectedTopic && (
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
+          <p className="text-xs text-gray-400 mt-2 text-center">
             Ask questions about the current topic content
           </p>
         )}
