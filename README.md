@@ -16,8 +16,8 @@
 ## Table of Contents
 
 - [Features](#features)
-- [ICP Building Blocks Used](#icp-building-blocks-used)
-- [Technical Architecture](#technical-architecture)
+- [ICP Building Blocks Used](#icp-building-blocks-used)x
+- [Technical Architecture](#technical-architecture)v
 - [Overview](#overview)
 - [Local Development Setup](#local-development-setup)
 - [Content & Deployment Workflow](#content--deployment-workflow)

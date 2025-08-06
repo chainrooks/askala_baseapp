@@ -4,7 +4,7 @@ import { execSync } from 'child_process';
 class MotokoDeployment {
     constructor() {
         this.metadataFile = 'deployment/lesson-metadata.json';
-        this.canisterName = 'learning_content';
+        this.canisterName = 'backend';
         this.network = process.env.DFX_NETWORK || 'local';
     }
 
@@ -49,7 +49,7 @@ class MotokoDeployment {
             'dfx', 'canister', 'call',
             '--network', this.network,
             this.canisterName,
-            'bulkUpdateOrCreateLessonMetadata',
+            'bulkUpdateOrCreateCourse',
             `'(${candidArg})'`
         ].join(' ');
 

@@ -1,8 +1,7 @@
 import Time "mo:base/Time";
-import Types "../user_management/types";
 
-module {
-        public type LessonMetadataInput = {
+module CourseType{
+    public type CourseMetadataInput = {
         slug: Text;
         title: Text;
         description: Text;
@@ -11,7 +10,7 @@ module {
         version: Text;
     };
 
-    public type LessonMetadata = {
+    public type CourseMetadata = {
         id: Text;
         slug: Text;
         title: Text;
@@ -22,11 +21,4 @@ module {
         createdAt: Time.Time;
         updatedAt: Time.Time;
     };
-
-    public type UserProgress = {
-        lessonId: LessonMetadata;
-        userId: Types.User;
-        progress: Nat;
-        lastUpdated: Time.Time;
-    };
-}
+};
