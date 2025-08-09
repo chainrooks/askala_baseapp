@@ -4,6 +4,11 @@
       "main": "src/backend/main.mo",
       "type": "motoko"      
     },
+    "icrc1_ledger_canister": {
+        "type": "custom",
+        "candid": "https://raw.githubusercontent.com/dfinity/ic/21a02f483fa8028568f4c2c5920ec960c87269c0/rs/ledger_suite/icrc1/ledger/ledger.did",
+        "wasm": "https://download.dfinity.systems/ic/21a02f483fa8028568f4c2c5920ec960c87269c0/canisters/ic-icrc1-ledger.wasm.gz"
+      },
     "askala_baseapp_frontend": {
       "dependencies": [
         "backend"
