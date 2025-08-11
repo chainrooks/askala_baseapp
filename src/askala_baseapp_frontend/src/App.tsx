@@ -1,81 +1,83 @@
-import { FormEvent, useEffect, useState } from 'react';
-// import { askala_baseapp_backend } from '../../declarations/askala_baseapp_backend'
-import { pythonCourse } from './data/courses';
-import { MainContent } from './section/main-content';
-import { SideContent } from './section/sidebar-content'
-import { TTopicProps } from './types/topic';
-import { ChatHistory, ChatMessage } from './types/global';
-import { ChatPanel } from './section/chat-panel';
-import { InternetIdentityState } from './types/auth';
-import { AuthClient } from '@dfinity/auth-client';
-import LoginPage from './section/auth/login-page';
+import { FormEvent, useEffect, useState } from 'react'
+// import { backend } from '../../declarations/backend'
+import { MainContent } from './section/main-content'
+import { CourseMetadata, SideContent } from './section/sidebar-content'
+import { TTopicProps } from './types/topic'
+import { ChatMessage } from './types/global'
+import { ChatPanel } from './section/chat-panel'
+import { InternetIdentityState } from './types/auth'
+import { AuthClient } from '@dfinity/auth-client'
+import LoginPage from './section/auth/login-page'
+import { CourseList } from './section/course/course-list'
 
 function App() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
-  const [selectedTopic, setSelectedTopic] = useState<TTopicProps | null>(null);
+  const [selectedTopic, setSelectedTopic] = useState<CourseMetadata | null>(null)
 
   const [authState, setAuthState] = useState<InternetIdentityState>({
     actor: undefined,
     authClient: undefined,
     isAuthenticated: false,
     principal: 'Click "Whoami" to see your principal ID'
-  });
+  })
 
   useEffect(() => {
-    checkAuthStatus();
-  }, []);
+    checkAuthStatus()
+  }, [])
 
   const checkAuthStatus = async () => {
-        try {
-            const authClient = await AuthClient.create();
-            const isAuthenticated = await authClient.isAuthenticated();
-            
-            setAuthState(prev => ({
-                ...prev,
-                authClient,
-                isAuthenticated
-            }));
-        } catch (error) {
-            console.error('Error checking auth status:', error);
-        }
-  };
+    try {
+      const authClient = await AuthClient.create()
+      const isAuthenticated = await authClient.isAuthenticated()
+
+      setAuthState((prev) => ({
+        ...prev,
+        authClient,
+        isAuthenticated
+      }))
+    } catch (error) {
+      console.error('Error checking auth status:', error)
+    }
+  }
 
   const logout = async () => {
-        try {
-            if (authState.authClient) {
-                await authState.authClient.logout();
-                setAuthState(prev => ({
-                    ...prev,
-                    isAuthenticated: false,
-                    principal: 'Click "Whoami" to see your principal ID'
-                }));
-            }
-        } catch (error) {
-            console.error('Logout error:', error);
-        }
-  };
+    try {
+      if (authState.authClient) {
+        await authState.authClient.logout()
+        setAuthState((prev) => ({
+          ...prev,
+          isAuthenticated: false,
+          principal: 'Click "Whoami" to see your principal ID'
+        }))
+      }
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
+  }
 
-  const handleTopicSelect = (topic: TTopicProps) => {
-    setSelectedTopic(topic);
-  };
+  const handleTopicSelect = (topic: CourseMetadata) => {
+    setSelectedTopic(topic)
+  }
 
   if (!authState.isAuthenticated) {
-    return <LoginPage state={authState} setState={setAuthState} />;
+    return <LoginPage state={authState} setState={setAuthState} />
   }
 
   return (
     <main>
       <div className="h-screen bg-background flex overflow-hidden">
         <SideContent
-          topics={pythonCourse.topics}
           selectedTopic={selectedTopic}
           onTopicSelect={handleTopicSelect}
           onLogout={logout}
+          authState={authState}
         />
 
-        <MainContent 
-          selectedTopic={selectedTopic}
-        />
+        <div>
+          <MainContent 
+            selectedTopic={selectedTopic}
+          />
+        </div>
 
         <ChatPanel
           selectedTopic={selectedTopic}
@@ -84,7 +86,7 @@ function App() {
         />
       </div>
     </main>
-  );
+  )
 }
 
-export default App;
+export default App

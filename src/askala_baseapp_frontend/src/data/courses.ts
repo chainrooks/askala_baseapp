@@ -1,4 +1,4 @@
-import { TCourseProps } from '@/types/course';
+import { TCourseProps } from '@/types/course'
 
 export const pythonCourse: TCourseProps = {
   id: 'python',
@@ -36,4 +36,4 @@ export const pythonCourse: TCourseProps = {
       description: 'Determining condition in while loop'
     }
   ]
-};
+}

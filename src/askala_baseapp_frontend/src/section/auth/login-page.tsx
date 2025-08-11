@@ -1,91 +1,91 @@
-import { useEffect, useState } from "react";
-import Login from "./login";
-import { AuthClient } from "@dfinity/auth-client";
-import { createActor } from "../../../../declarations/user_management";
-import { canisterId } from "../../../../declarations/user_management/index.js";
-import { InternetIdentityState } from "@/types/auth";
+import { useEffect, useState } from 'react'
+import Login from './login'
+import { AuthClient } from '@dfinity/auth-client'
+import { createActor } from '../../../../declarations/backend'
+import { canisterId } from '../../../../declarations/backend/index.js'
+import { InternetIdentityState } from '@/types/auth'
 
-const network = import.meta.env.DFX_NETWORK || "local";
+const network = import.meta.env.DFX_NETWORK || 'local'
 const identityProvider =
-  network === "ic"
-    ? "https://identity.ic0.app"
-    : "http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943";
+  network === 'ic'
+    ? 'https://identity.ic0.app'
+    : 'http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943'
 
 interface LoginPageProps {
-  state: InternetIdentityState;
-  setState: React.Dispatch<React.SetStateAction<InternetIdentityState>>;
+  state: InternetIdentityState
+  setState: React.Dispatch<React.SetStateAction<InternetIdentityState>>
 }
 
 export default function LoginPage({ state, setState }: LoginPageProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | undefined>();
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | undefined>()
 
   useEffect(() => {
-    updateActor();
-  }, []);
+    updateActor()
+  }, [])
 
   const updateActor = async () => {
     try {
-      const authClient = await AuthClient.create();
-      const identity = authClient.getIdentity();
+      const authClient = await AuthClient.create()
+      const identity = authClient.getIdentity()
       const actor = createActor(canisterId, {
-        agentOptions: { identity },
-      });
-      const isAuthenticated = await authClient.isAuthenticated();
+        agentOptions: { identity }
+      })
+      const isAuthenticated = await authClient.isAuthenticated()
 
       setState((prev) => ({
         ...prev,
         actor,
         authClient,
-        isAuthenticated,
-      }));
+        isAuthenticated
+      }))
     } catch (error) {
-      console.error("Error updating actor:", error);
-      setError("Failed to initialize authentication");
+      console.error('Error updating actor:', error)
+      setError('Failed to initialize authentication')
     }
-  };
+  }
 
   const login = async (): Promise<void> => {
-    setIsLoading(true);
-    setError(undefined);
+    setIsLoading(true)
+    setError(undefined)
 
     try {
       if (!state.authClient) {
-        console.error("Auth client not initialized");
-        setError("Authentication client not initialized");
-        return;
+        console.error('Auth client not initialized')
+        setError('Authentication client not initialized')
+        return
       }
 
       await state.authClient.login({
         identityProvider,
-        onSuccess: updateActor,
-      });
+        onSuccess: updateActor
+      })
     } catch (error) {
-      console.error("Login error:", error);
-      setError(error instanceof Error ? error.message : "Login failed");
+      console.error('Login error:', error)
+      setError(error instanceof Error ? error.message : 'Login failed')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const whoami = async (): Promise<void> => {
     try {
       if (!state.actor) {
-        console.error("Actor not initialized");
-        setError("Actor not initialized");
-        return;
+        console.error('Actor not initialized')
+        setError('Actor not initialized')
+        return
       }
 
-      setState((prev) => ({ ...prev, principal: "Loading..." }));
-      const result = await state.actor.whoami();
-      const principal = result.toString();
+      setState((prev) => ({ ...prev, principal: 'Loading...' }))
+      const result = await state.actor.whoami()
+      const principal = result.toString()
 
-      setState((prev) => ({ ...prev, principal }));
+      setState((prev) => ({ ...prev, principal }))
     } catch (error) {
-      console.error("Whoami error:", error);
-      setState((prev) => ({ ...prev, principal: "Error loading principal" }));
+      console.error('Whoami error:', error)
+      setState((prev) => ({ ...prev, principal: 'Error loading principal' }))
     }
-  };
+  }
 
   return (
     <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden">
@@ -124,19 +124,24 @@ export default function LoginPage({ state, setState }: LoginPageProps) {
         <div className="mt-8 p-6 backdrop-blur-xl bg-slate-800/70 border border-slate-700/40 rounded-xl text-sm text-slate-300 shadow-xl shadow-purple-900/10">
           <div className="flex items-center space-x-2 mb-4">
             <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-            <p className="font-medium text-slate-200">About Internet Identity</p>
+            <p className="font-medium text-slate-200">
+              About Internet Identity
+            </p>
           </div>
           <div className="space-y-2 text-xs leading-relaxed text-slate-400">
             <p>
-              Internet Identity provides secure, anonymous authentication without passwords or personal data collection.
+              Internet Identity provides secure, anonymous authentication
+              without passwords or personal data collection.
             </p>
             <p>
-              Your identity is cryptographically secured and completely private – perfect for a secure learning environment.
+              Your identity is cryptographically secured and completely private
+              – perfect for a secure learning environment.
             </p>
           </div>
 
           <div className="mt-4 pt-4 border-t border-slate-700/50 text-slate-400 text-xs leading-relaxed">
-            Experience personalized AI-powered learning with Askala's advanced RAG technology that adapts to your unique learning style.
+            Experience personalized AI-powered learning with Askala's advanced
+            RAG technology that adapts to your unique learning style.
           </div>
 
           <div className="mt-4 space-y-2">
@@ -148,12 +153,17 @@ export default function LoginPage({ state, setState }: LoginPageProps) {
               Whoami
             </button>
 
-            {state.principal && state.principal !== "Click \"Whoami\" to see your principal ID" && (
-              <div className="mt-2 p-3 bg-slate-700/50 rounded-lg">
-                <p className="text-xs text-slate-300 font-medium">Your Principal ID:</p>
-                <p className="text-xs text-slate-400 break-all mt-1">{state.principal}</p>
-              </div>
-            )}
+            {state.principal &&
+              state.principal !== 'Click "Whoami" to see your principal ID' && (
+                <div className="mt-2 p-3 bg-slate-700/50 rounded-lg">
+                  <p className="text-xs text-slate-300 font-medium">
+                    Your Principal ID:
+                  </p>
+                  <p className="text-xs text-slate-400 break-all mt-1">
+                    {state.principal}
+                  </p>
+                </div>
+              )}
           </div>
         </div>
       </div>
@@ -161,5 +171,5 @@ export default function LoginPage({ state, setState }: LoginPageProps) {
       <div className="absolute inset-0 bg-gradient-to-r from-slate-900/20 via-transparent to-slate-900/20 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-slate-900/10 via-transparent to-slate-900/20 pointer-events-none" />
     </div>
-  );
+  )
 }

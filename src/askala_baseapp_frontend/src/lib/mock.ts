@@ -1,4 +1,4 @@
-import { TCourseProps } from "@/types/course";
+import { TCourseProps } from '@/types/course'
 
 export const pythonCourse: TCourseProps = {
   id: 'python',
@@ -14,6 +14,6 @@ export const pythonCourse: TCourseProps = {
       id: 'data-structures',
       title: 'Data Structures',
       description: 'Lists, dictionaries, sets, and tuples'
-    },
+    }
   ]
-};
+}
