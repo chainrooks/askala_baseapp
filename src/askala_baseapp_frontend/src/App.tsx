@@ -9,6 +9,7 @@ import { InternetIdentityState } from './types/auth'
 import { AuthClient } from '@dfinity/auth-client'
 import LoginPage from './section/auth/login-page'
 import { CourseList } from './section/course/course-list'
+import { HomePage } from './section/HomePage'
 
 function App() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
@@ -60,7 +61,8 @@ function App() {
   }
 
   if (!authState.isAuthenticated) {
-    return <LoginPage state={authState} setState={setAuthState} />
+    return <HomePage />
+    // return <LoginPage state={authState} setState={setAuthState} />
   }
 
   return (

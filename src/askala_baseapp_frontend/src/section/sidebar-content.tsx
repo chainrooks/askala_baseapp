@@ -3,7 +3,7 @@ import type { TTopicProps } from '@/types/topic'
 import { BookOpen } from 'lucide-react'
 import { InternetIdentityState } from '@/types/auth'
 
-interface SidebarProps {
+export interface SidebarProps {
   selectedTopic: CourseMetadata | null
   onTopicSelect: (topic: CourseMetadata) => void
   onLogout: () => Promise<void> | void

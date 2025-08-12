@@ -18,7 +18,8 @@
     "src/askala_baseapp_frontend"
   ],
   "dependencies": {
-    "@vitejs/plugin-react": "^4.6.0"
+    "@vitejs/plugin-react": "^4.6.0",
+    "lucide-react": "^0.539.0"
   },
   "devDependencies": {
     "@types/node": "^24.0.14",
