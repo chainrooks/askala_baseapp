@@ -2,7 +2,10 @@
   "canisters": {
     "backend": {
       "main": "src/backend/main.mo",
-      "type": "motoko"      
+      "type": "motoko",
+      "dependencies": [
+        "icp_ledger_canister"
+      ]
     },
     "icp_ledger_canister": {
         "type": "custom",
