@@ -223,6 +223,28 @@ persistent actor AskalaBackend {
     }
   };
 
+  public query func getTotalRevenue() : async Nat64 {
+        var total : Nat64 = 0;
+        for (inv in invoices.vals()) {
+            switch (inv.status) {
+            case (#Paid) { total += inv.amount.e8s };
+            case (_) {};
+            };
+        };
+        total
+        };
+
+        public query func getRevenueByCourse(slug: Text) : async Nat64 {
+        var total : Nat64 = 0;
+        for (inv in invoices.vals()) {
+            if (inv.courseSlug == slug and inv.status == #Paid) {
+            total += inv.amount.e8s;
+            };
+        };
+        total
+        };
+
+
     public query func hasAccess(user : Principal, courseSlug : Text) : async Bool {
         for (e in entitlements.vals()) {
         if (e.user == user and e.courseId == courseSlug) {
