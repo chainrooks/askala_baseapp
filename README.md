@@ -48,6 +48,10 @@ While Askala currently serves the frontend from traditional infrastructure, it c
 - **📡 (Upcoming) HTTP Outcalls (Optional Enhancement)**
 Askala may later integrate HTTP outcalls—allowing canisters to directly fetch external data (e.g., AI inference results or third-party content) from off-chain APIs. This can further decentralize backend logic and reduce reliance on frontend requests.
 
+- **💸 ICP Ledger**
+Askala may later integrate HTTP outcalls—allowing canisters to directly fetch external data (e.g., AI inference results or third-party content) from off-chain APIs. This can further decentralize backend logic and reduce reliance on frontend requests.
+
+
 ## Technical Architecture
 
 ## Overview
@@ -55,7 +59,7 @@ Askala may later integrate HTTP outcalls—allowing canisters to directly fetch 
   <a href="#">
     <img src="./src/askala_baseapp_frontend/public/images/techical-architecture.png" alt="ASKALA Logo" role="presentation"/>
   </a>
-
+![alt text](image.png)
 <br/>
 <br/>
 
@@ -66,7 +70,7 @@ This architecture uses ICP as the backend platform with several canisters: **Fro
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v22+)
-- [DFX SDK](https://internetcomputer.org/docs/current/developer-docs/setup/install) (for ICP development)
+- [DFX SDK](https://internetcomputer.org/docs/current/developer-docs/setup/install) (for ICP development) (v0.28)
 - [npm](https://www.npmjs.com/) (v11+)
 - [mops](https://internetcomputer.org/docs/tutorials/developer-liftoff/level-3/3.1-package-managers) ()
 
@@ -99,6 +103,54 @@ dfx start --background
 5. **Deploy Local**
 ```sh
 dfx deploy --network=local
+```
+
+## Local Dev Initiate Ledger
+
+1. **create minter as admin**
+```bash 
+dfx identity use minter
+export MINTER_ACCOUNT_ID=$(dfx ledger account-id)
+```
+
+1. **Buat identity `minter` sebagai admin**
+```bash 
+dfx identity new minter
+dfx identity use minter
+export MINTER_ACCOUNT_ID=$(dfx ledger account-id)
+```
+
+2. **Buat identity default `(DevAccount)`**
+```bash
+dfx identity new DevAccount
+dfx identity use DevAccount
+export DEFAULT_ACCOUNT_ID=$(dfx ledger account-id)
+```
+
+3. **Inisialisasi Ledger dengan `DevAccount`**
+makesure canister already running
+```bash
+dfx deploy --specified-id ryjl3-tyaaa-aaaaa-aaaba-cai icp_ledger_canister --argument "
+(variant {
+  Init = record {
+    minting_account = \"${MINTER_ACCOUNT_ID}\";
+    initial_values = vec {
+      record {
+        \"${DEFAULT_ACCOUNT_ID}\";
+        record {
+          e8s = 10_000_000_000 : nat64;
+        };
+      };
+    };
+    send_whitelist = vec {};
+    transfer_fee = opt record {
+      e8s = 10_000 : nat64;
+    };
+    token_symbol = opt \"LICP\";
+    token_name = opt \"Local ICP\";
+  }
+})
+"
 ```
 
 ## Content & Deployment Workflow
@@ -144,9 +196,7 @@ see [Askala AI Repository](https://github.com/chainrooks/askala_ai)
 
 ## Project Structure
 
-- `src/learning_content/` – Motoko learning content canister code
-- `src/progress/` – Motoko progess canister code
-- `src/user_management/` – Motoko user management canister code
+- `src/backend/` – Askala Backend Code
 - `src/askala_baseapp_frontend/` – React frontend code
 - `build-scripts/` – Scripts for content registry and deployment
 - `deployment/` – Generated lesson metadata for backend
