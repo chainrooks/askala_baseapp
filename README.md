@@ -60,7 +60,7 @@ Askala leverages the ICP Ledger canister, the core blockchain component that sec
   <a href="#">
     <img src="./src/askala_baseapp_frontend/public/images/techical-architecture.png" alt="ASKALA Logo" role="presentation"/>
   </a>
-![alt text](image.png)
+  
 <br/>
 <br/>
 
