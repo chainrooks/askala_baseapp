@@ -23,7 +23,7 @@ persistent actor AskalaBackend {
     private var courseEntries: [CourseType.CourseMetadata] = [];    
     private var _userProgress : [ProgressType.UserProgress] = [];    
 
-      // Premium paywall
+    // Paywall state
     private  var prices : [(Text, { e8s : Nat64 })] = []; // slug -> price
     private  var invoices : [CourseType.Invoice] = [];
     private  var entitlements : [CourseType.Entitlement] = [];
@@ -32,15 +32,22 @@ persistent actor AskalaBackend {
         owner = Principal.fromText("aaaaa-aa"); sub = null
     };
 
-    // ===== System Functions for Upgrades =====
+    // ==============================
+    // System Hooks
+    // ==============================
+    /// Called before upgrade. Use for logging or custom serialization if needed.
     system func preupgrade() {
         Debug.print("Starting preupgrade...");
     };
 
+    /// Called after upgrade. Use for migrations or maintenance tasks.
     system func postupgrade() {
         Debug.print("Postupgrade completed");
     };
 
+    // =================================================
+    // SECTION: Types (Local Helper Types)
+    // =================================================
      type Tokens = {
         e8s : Nat64;
     };
@@ -51,54 +58,65 @@ persistent actor AskalaBackend {
         toSubaccount : ?IcpLedger.SubAccount;
     };
 
+
+    // =================================================
+    // SECTION: Ledger Helpers (Transfer & Subaccount)
+    // =================================================
+    /// Transfer ICP from the default subaccount canister to the destination account.
+    /// - Standard ledger fee: 10,000 e8s.
+    /// - Returns #ok(blockIndex) if successful, #err(msg) if unsuccessful.
     public shared func transfer(args : TransferArgs) : async Result.Result<IcpLedger.BlockIndex, Text> {
-    Debug.print(
-      "Transferring "
-      # debug_show (args.amount)
-      # " tokens to principal "
-      # debug_show (args.toPrincipal)
-      # " subaccount "
-      # debug_show (args.toSubaccount)
-    );
+        Debug.print(
+        "Transferring "
+        # debug_show (args.amount)
+        # " tokens to principal "
+        # debug_show (args.toPrincipal)
+        # " subaccount "
+        # debug_show (args.toSubaccount)
+        );
 
-    let transferArgs : IcpLedger.TransferArgs = {
-      // can be used to distinguish between transactions
-      memo = 0;
-      // the amount we want to transfer
-      amount = args.amount;
-      // the ICP ledger charges 10_000 e8s for a transfer
-      fee = { e8s = 10_000 };
-      // we are transferring from the canisters default subaccount, therefore we don't need to specify it
-      from_subaccount = null;
-      // we take the principal and subaccount from the arguments and convert them into an account identifier
-      to = Principal.toLedgerAccount(args.toPrincipal, args.toSubaccount);
-      // a timestamp indicating when the transaction was created by the caller; if it is not specified by the caller then this is set to the current ICP time
-      created_at_time = null;
-    };
-
-    try {
-      // initiate the transfer
-      let transferResult = await IcpLedger.transfer(transferArgs);
-
-      // check if the transfer was successfull
-      switch (transferResult) {
-        case (#Err(transferError)) {
-          return #err("Couldn't transfer funds:\n" # debug_show (transferError));
+        let transferArgs : IcpLedger.TransferArgs = {
+        // can be used to distinguish between transactions
+        memo = 0;
+        // the amount we want to transfer
+        amount = args.amount;
+        // the ICP ledger charges 10_000 e8s for a transfer
+        fee = { e8s = 10_000 };
+        // we are transferring from the canisters default subaccount, therefore we don't need to specify it
+        from_subaccount = null;
+        // we take the principal and subaccount from the arguments and convert them into an account identifier
+        to = Principal.toLedgerAccount(args.toPrincipal, args.toSubaccount);
+        // a timestamp indicating when the transaction was created by the caller; if it is not specified by the caller then this is set to the current ICP time
+        created_at_time = null;
         };
-        case (#Ok(blockIndex)) { return #ok blockIndex };
-      };
-    } catch (error : Error) {
-      // catch any errors that might occur during the transfer
-      return #err("Reject message: " # Error.message(error));
-    };
-  };
 
-    // ===== (Opsional) helper untuk cek admin =====
+        try {
+        // initiate the transfer
+        let transferResult = await IcpLedger.transfer(transferArgs);
+
+        // check if the transfer was successfull
+        switch (transferResult) {
+            case (#Err(transferError)) {
+            return #err("Couldn't transfer funds:\n" # debug_show (transferError));
+            };
+            case (#Ok(blockIndex)) { return #ok blockIndex };
+        };
+        } catch (error : Error) {
+        // catch any errors that might occur during the transfer
+        return #err("Reject message: " # Error.message(error));
+        };
+    };
+
+    // =================================================
+    // SECTION: Admin Utilities
+    // =================================================
+    /// Check if the principal is an admin.
     func isAdmin(p : Principal) : Bool {
         for (a in admins.vals()) { if (a == p) return true };
         false
     };
 
+    /// Utility: convert Nat64 to a 32-byte subaccount (big-endian on the first 8 bytes).
     func nat64ToSubaccount(n : Nat64) : IcpLedger.SubAccount {
         // 32 bytes, isi 8 byte high di depan, sisanya 0
         let arr = Array.tabulate<Nat8>(32, func (i : Nat) : Nat8 {
@@ -111,9 +129,11 @@ persistent actor AskalaBackend {
         Blob.fromArray(arr)
         };
 
-    // ===== Fungsi bootstrap admin pertama =====
-    // Hanya bisa berhasil sekali: jika daftar admin kosong.
-    // Mengembalikan true jika berhasil menambahkan caller sebagai admin pertama, false jika sudah pernah di-setup.
+    // =================================================
+    // SECTION: Admin API
+    // =================================================
+    /// Initialize the first admin. Only successful if the admin list is empty.
+    /// Returns `true` if the caller is set as the first admin; `false` if already set.
     public shared (msg) func bootstrapAdmin() : async Bool {
     if (admins.size() == 0) {
         admins := [msg.caller];
@@ -122,12 +142,15 @@ persistent actor AskalaBackend {
     return false;
     };
 
-    // ===== (Opsional) lihat daftar admin untuk debug =====
+    /// Obtain a list of current principal administrators (for debugging/auditing)
     public query func getAdmins() : async [Principal] {
     admins
     };
 
-     // ====== Pricing (admin) ======
+    // =================================================
+    // SECTION: Pricing (Admin-only)
+    // =================================================
+    /// Set the price for the slug course. If the slug already exists → overwrite; if not → append.
     public shared (msg) func setPrice(slug : Text, p : CourseType.CoursePrice) : async () {
         assert(isAdmin(msg.caller));
         var found = false;
@@ -138,17 +161,25 @@ persistent actor AskalaBackend {
         if (not found) { prices := Array.append(prices, [(slug, p)]) };
     };
 
+     /// Take the price for the slug course (if any).
       public query func getPrice(slug : Text) : async ?CourseType.CoursePrice {
             for ((s, pr) in prices.vals()) { if (s == slug) return ?pr };
             null
         };
 
+    /// Set treasury goals (principal + optional subaccount). Admin only.
     public shared (msg) func setTreasury(owner : Principal, sub : ?IcpLedger.SubAccount) : async () {
         assert(isAdmin(msg.caller));
         treasury := { owner; sub };
     };
 
-      // ====== Invoice ======
+      // =================================================
+    // SECTION: Invoice Lifecycle (Create → Verify/Settle → Withdraw)
+    // =================================================
+    /// Create an invoice for `courseSlug`:
+    /// - Create a unique subaccount from invoiceId (Nat64).
+    /// - Return the AccountIdentifier (text) deposit that the user must pay.
+    /// - Expired option (`expiresInSecs`) → save `expiresAt`.
   public shared (msg) func createInvoice(courseSlug : Text, expiresInSecs : ?Nat)
     : async { invoiceId : Nat64; amount : CourseType.CoursePrice; depositAccount : Text; subaccount : IcpLedger.SubAccount; expiresAt : ?Int }
   {
@@ -186,6 +217,9 @@ persistent actor AskalaBackend {
     }
   };
 
+    /// Verify the deposit on the invoice subaccount and mark it as #Paid if sufficient.
+    /// - Do not transfer ICP (not yet withdrawn).
+    /// - If successful, grant entitlement (lifetime: expiresAt = null).
   public shared (_msg) func verifyAndSettle(invoiceId : Nat64) : async Result.Result<(), Text> {
     // find invoice
     var inv : ?CourseType.Invoice  = null;
@@ -223,18 +257,23 @@ persistent actor AskalaBackend {
     }
   };
 
-  public query func getTotalRevenue() : async Nat64 {
-        var total : Nat64 = 0;
-        for (inv in invoices.vals()) {
-            switch (inv.status) {
-            case (#Paid) { total += inv.amount.e8s };
-            case (_) {};
+    // =================================================
+    // SECTION: Revenue & Access Query
+    // =================================================
+    /// Total revenue (e8s) from all invoices with status #Paid (gross, before deducting fees).
+      public query func getTotalRevenue() : async Nat64 {
+            var total : Nat64 = 0;
+            for (inv in invoices.vals()) {
+                switch (inv.status) {
+                case (#Paid) { total += inv.amount.e8s };
+                case (_) {};
+                };
             };
-        };
-        total
+            total
         };
 
-        public query func getRevenueByCourse(slug: Text) : async Nat64 {
+    /// Total revenue (e8s) for a specific course (slug) from invoice #Paid.
+    public query func getRevenueByCourse(slug: Text) : async Nat64 {
         var total : Nat64 = 0;
         for (inv in invoices.vals()) {
             if (inv.courseSlug == slug and inv.status == #Paid) {
@@ -244,7 +283,7 @@ persistent actor AskalaBackend {
         total
         };
 
-
+    /// Check whether `user` has access to `courseSlug` (lifetime or not expired).
     public query func hasAccess(user : Principal, courseSlug : Text) : async Bool {
         for (e in entitlements.vals()) {
         if (e.user == user and e.courseId == courseSlug) {
@@ -257,6 +296,12 @@ persistent actor AskalaBackend {
         false
     };
 
+    // =================================================
+    // SECTION: Withdrawal (Admin-only)
+    // =================================================
+    /// Withdraw ICP funds from the subaccount invoice that has been #Paid to the designated treasury.
+    /// - Using a standard fee of 10,000 e8s
+    /// - Source of funds: `from_subaccount = invoice.subaccount`
     public shared (msg) func withdrawInvoice(invoiceId : Nat64) : async Result.Result<IcpLedger.BlockIndex, Text> {
         assert(isAdmin(msg.caller));
 
@@ -293,7 +338,10 @@ persistent actor AskalaBackend {
 
 
 
-    // ====== Course Service ======
+    // =================================================
+    // SECTION: Course Service (CRUD)
+    // =================================================
+    /// Get course by ID (unique identifier).
     public shared query func getCourseById(id: Text) : async ?CourseType.CourseMetadata {                    
         for (course in courseEntries.vals()) {
             if (course.id == id) {
@@ -304,6 +352,7 @@ persistent actor AskalaBackend {
         return null;
     };
 
+    /// Get course by slug (unique identifier).
     public shared query func getCourseBySlug(slug: Text) : async ?CourseType.CourseMetadata {
         for (course in courseEntries.vals()) {
             if (course.slug == slug) {
@@ -314,10 +363,12 @@ persistent actor AskalaBackend {
         return null;
     };
 
+    /// Get All Courses (list of metadata).
     public shared query func getAllCourses() : async [CourseType.CourseMetadata] {
         return courseEntries;
     };
 
+    /// Create a new course (generate ID + timestamp).
     public func createCourse(course: CourseType.CourseMetadataInput): async CourseType.CourseMetadata {
         let now = Time.now();
 
@@ -338,6 +389,7 @@ persistent actor AskalaBackend {
         return entry;
     };
 
+    /// Update course based on ID (bump updatedAt).
     public func updateCourse(course: CourseType.CourseMetadata): async CourseType.CourseMetadata {
         let now = Time.now();
         let updatedCourse: CourseType.CourseMetadata = {
@@ -364,6 +416,7 @@ persistent actor AskalaBackend {
         return updatedCourse;
     };
 
+    /// Upsert course based on slug (create new if does not exist, update if exists).
     public func updateOrCreateCourse(course: CourseType.CourseMetadataInput): async () {
         let existingCourseOpt = await getCourseBySlug(course.slug);
 
@@ -395,13 +448,19 @@ persistent actor AskalaBackend {
         };
     };
 
+    /// Bulk upsert multiple courses (calling updateOrCreateCourse for each item).
     public func bulkUpdateOrCreateCourse(courses: [CourseType.CourseMetadataInput]) : async () {
         for (course in courses.vals()) {
             await updateOrCreateCourse(course);
         };
     };
 
-    // ===== Progress Service ======
+
+    // =================================================
+    // SECTION: Progress Service
+    // =================================================
+
+    /// Adds user progress notes for a specific course (if courseId is valid).
     public shared func addUserProgress(userProgressInput: ProgressType.UserProgressInput) : async () {
         let lessonMetadataOpt = await getCourseById(userProgressInput.courseId);
 
@@ -423,6 +482,7 @@ persistent actor AskalaBackend {
         };
     };
 
+    /// Retrieve user progress for (userId, courseId) if available.
     public func getUserProgress(userProgressInput: ProgressType.GetUserProgressInput) : async ?ProgressType.UserProgress {
         for (progress in _userProgress.vals()) {
             if (progress.userId == userProgressInput.userId and progress.courseId == userProgressInput.courseId) {
@@ -433,7 +493,10 @@ persistent actor AskalaBackend {
         return null;
     };
 
-    // ===== User Service ======
+    // =================================================
+    // SECTION: User Service (Utility)
+    // =================================================
+    /// Returns the current principal caller.
     public query (message) func whoami() : async Principal {
         message.caller;
     };
