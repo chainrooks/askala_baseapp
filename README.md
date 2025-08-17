@@ -49,7 +49,8 @@ While Askala currently serves the frontend from traditional infrastructure, it c
 Askala may later integrate HTTP outcalls—allowing canisters to directly fetch external data (e.g., AI inference results or third-party content) from off-chain APIs. This can further decentralize backend logic and reduce reliance on frontend requests.
 
 - **💸 ICP Ledger**
-Askala may later integrate HTTP outcalls—allowing canisters to directly fetch external data (e.g., AI inference results or third-party content) from off-chain APIs. This can further decentralize backend logic and reduce reliance on frontend requests.
+Askala leverages the ICP Ledger canister, the core blockchain component that securely records balances, transfers, and token history on-chain.
+➡️ This enables transparent handling of learning credits or tokenized rewards for students—where minting, transfers, and fees are immutably verified by the ledger canister with the same security guarantees as ICP itself
 
 
 ## Technical Architecture
