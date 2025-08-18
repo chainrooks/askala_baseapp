@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import Login from './login'
 import { AuthClient } from '@dfinity/auth-client'
-// import { createActor } from '../../../../declarations/backend'
-// import { canisterId } from '../../../../declarations/backend/index.js'
+import { createActor } from '../../../../declarations/backend'
+import { canisterId } from '../../../../declarations/backend/index.js'
 import { InternetIdentityState } from '@/types/auth'
 
 const network = import.meta.env.DFX_NETWORK || 'local'

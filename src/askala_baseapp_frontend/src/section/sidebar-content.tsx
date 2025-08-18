@@ -2,10 +2,18 @@ import React, { useEffect, useState } from 'react'
 import type { TTopicProps } from '@/types/topic'
 import { BookOpen } from 'lucide-react'
 import { InternetIdentityState } from '@/types/auth'
+import { pythonCourse } from '@/data/courses'
+
+// export interface SidebarProps {
+//   selectedTopic: CourseMetadata | null
+//   onTopicSelect: (topic: CourseMetadata) => void
+//   onLogout: () => Promise<void> | void
+//   authState: InternetIdentityState
+// }
 
 export interface SidebarProps {
-  selectedTopic: CourseMetadata | null
-  onTopicSelect: (topic: CourseMetadata) => void
+  selectedTopic: TTopicProps | null
+  onTopicSelect: (topic: TTopicProps) => void
   onLogout: () => Promise<void> | void
   authState: InternetIdentityState
 }
@@ -77,9 +85,9 @@ export const SideContent: React.FC<SidebarProps> = ({
       </button>
 
       <div className="flex-1 overflow-y-auto">
-		{loading && <>Loading...</>}
+        {loading && <>Loading...</>}
         <div className="p-4 space-y-2">
-          {courses.map((topic) => {
+          {pythonCourse.topics.map((topic) => {
             const isSelected = selectedTopic?.id === topic.id
             return (
               <button

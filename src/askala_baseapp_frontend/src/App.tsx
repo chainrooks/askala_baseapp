@@ -10,10 +10,14 @@ import { AuthClient } from '@dfinity/auth-client'
 import LoginPage from './section/auth/login-page'
 import { CourseList } from './section/course/course-list'
 import { HomePage } from './section/HomePage'
+import LandingPage from './section/landing-page'
 
 function App() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
-  const [selectedTopic, setSelectedTopic] = useState<CourseMetadata | null>(null)
+  // const [selectedTopic, setSelectedTopic] = useState<CourseMetadata | null>(
+  //   null
+  // )
+  const [selectedTopic, setSelectedTopic] = useState<TTopicProps | null>(null)
 
   const [authState, setAuthState] = useState<InternetIdentityState>({
     actor: undefined,
@@ -56,13 +60,18 @@ function App() {
     }
   }
 
-  const handleTopicSelect = (topic: CourseMetadata) => {
+  // const handleTopicSelect = (topic: CourseMetadata) => {
+  //   setSelectedTopic(topic)
+  // }
+
+  const handleTopicSelect = (topic: TTopicProps) => {
     setSelectedTopic(topic)
   }
 
   if (!authState.isAuthenticated) {
-    return <HomePage />
+    // return <HomePage />
     // return <LoginPage state={authState} setState={setAuthState} />
+    return <LandingPage />
   }
 
   return (
@@ -76,9 +85,7 @@ function App() {
         />
 
         <div>
-          <MainContent 
-            selectedTopic={selectedTopic}
-          />
+          <MainContent selectedTopic={selectedTopic} />
         </div>
 
         <ChatPanel

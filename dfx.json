@@ -7,6 +7,7 @@
         "icp_ledger_canister"
       ]
     },
+<<<<<<< Updated upstream
     "icp_ledger_canister": {
         "type": "custom",
         "candid": "https://raw.githubusercontent.com/dfinity/ic/047925dfd8386aca91d154054149727131766084/rs/ledger_suite/icp/ledger.did",
@@ -17,6 +18,8 @@
           }
       }
     },
+=======
+>>>>>>> Stashed changes
     "askala_baseapp_frontend": {
       "dependencies": [
         "backend"

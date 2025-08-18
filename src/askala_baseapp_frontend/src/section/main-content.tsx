@@ -1,17 +1,83 @@
 import React from 'react'
 import type { TTopicProps } from '@/types/topic'
+import { useRef, useState, useEffect } from 'react'
 import { Brain, FileText, Loader2 } from 'lucide-react'
 import { useMDXContent } from '@/hooks/use-mdx-content'
 import { CourseMetadata } from './sidebar-content'
+import '../markdown.css'
 
 interface MainContentProps {
   selectedTopic: CourseMetadata | null
 }
 
-export const MainContent: React.FC<MainContentProps> = ({ selectedTopic }) => {
-  const { MDXComponent, loading, error } = useMDXContent(selectedTopic)
+interface AlternativeMainContentProps {
+  selectedTopic: TTopicProps | null
+}
 
-  console.log("Mdx Content", MDXComponent);
+// export function MDXWithSelection({ MDXComponent }: { MDXComponent: React.ComponentType }) {
+//   const containerRef = useRef<HTMLDivElement>(null);
+//   const [popup, setPopup] = useState<{ text: string; x: number; y: number } | null>(null);
+
+//   useEffect(() => {
+//     const handleMouseUp = (e: MouseEvent) => {
+//       const selection = window.getSelection();
+//       if (!selection) return;
+
+//       const selectedText = selection.toString().trim();
+//       if (!selectedText) {
+//         setPopup(null);
+//         return;
+//       }
+
+//       const range = selection.getRangeAt(0);
+//       const rect = range.getBoundingClientRect();
+
+//       setPopup({
+//         text: selectedText,
+//         x: rect.left + window.scrollX - 170,
+//         y: rect.top + window.scrollY - 170
+//       });
+//     };
+
+//     document.addEventListener("mouseup", handleMouseUp);
+//     return () => document.removeEventListener("mouseup", handleMouseUp);
+//   }, []);
+
+//   return (
+//     <div ref={containerRef} className="relative prose prose-invert prose-slate max-w-none">
+//       <MDXComponent />
+
+//       {popup && (
+//         <div
+//           style={{
+//             position: "absolute",
+//             top: popup.y,
+//             left: popup.x,
+//             background: "#1f2937",
+//             color: "white",
+//             padding: "4px 8px",
+//             borderRadius: "6px",
+//             fontSize: "14px",
+//             cursor: "pointer",
+//             boxShadow: "0px 2px 8px rgba(0,0,0,0.3)",
+//             zIndex: 1000
+//           }}
+//           onClick={() => {
+//             alert(`You selected: ${popup.text}`);
+//             setPopup(null);
+//           }}
+//         >
+//           Want to ask this?
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+export const MainContent: React.FC<AlternativeMainContentProps> = ({
+  selectedTopic
+}) => {
+  const { MDXComponent, loading, error } = useMDXContent(selectedTopic)
 
   const getWelcomeContent = () => {
     if (!selectedTopic) {
@@ -91,7 +157,7 @@ export const MainContent: React.FC<MainContentProps> = ({ selectedTopic }) => {
 
     if (MDXComponent) {
       return (
-        <div className="prose prose-invert prose-slate max-w-none">
+        <div className="prose prose-invert prose-slate max-w-none markdown-body">
           <MDXComponent />
         </div>
       )
