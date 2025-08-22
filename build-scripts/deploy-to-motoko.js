@@ -100,6 +100,7 @@ class MotokoDeployment {
         code = "${lesson.code}";
         description = "${lesson.description}";
         contentHash = "${lesson.contentHash}";
+        is_premium = ${lesson.is_premium};
         version = "${lesson.version}";
         createdAt = "${lesson.createdAt}";
         updatedAt = "${lesson.updatedAt}";
@@ -114,6 +115,7 @@ class MotokoDeployment {
             description = "${lesson.description}";
             contentHash = "${lesson.contentHash}";
             version = "${lesson.version}";
+            is_premium = ${lesson.is_premium};
             createdAt = "${lesson.createdAt}";
             updatedAt = "${lesson.updatedAt}";
         }`;
@@ -128,6 +130,7 @@ class MotokoDeployment {
             code : lesson.code,
             contentHash: lesson.contentHash,
             version: lesson.version,
+            is_premium: lesson.is_premium,
             createdAt: lesson.createdAt,
             updatedAt: lesson.updatedAt
         }));

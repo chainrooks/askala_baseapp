@@ -10,6 +10,7 @@ module CourseType{
         code: Text;
         contentHash: Text;
         version: Text;
+        is_premium: Bool; // true = premium, false = free
     };
 
     public type CourseMetadata = {
@@ -19,7 +20,8 @@ module CourseType{
         description: Text;
         code: Text;
         contentHash: Text;
-        version: Text;
+        version: Text;       
+        is_premium: Bool; // true = premium, false = free 
         createdAt: Time.Time;
         updatedAt: Time.Time;
     };

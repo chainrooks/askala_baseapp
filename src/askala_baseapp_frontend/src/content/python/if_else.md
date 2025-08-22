@@ -4,6 +4,7 @@ name: "If Else"
 description: "Condition and scope"
 version: "1.0"
 code: "PY3"
+premium: true
 ---
 
 # ⚖️ Python If...Else Guide

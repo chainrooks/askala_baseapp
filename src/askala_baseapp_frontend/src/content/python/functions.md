@@ -4,6 +4,7 @@ name: "Functions"
 description: "Function definition, arguments, and scope"
 version: "1.0"
 code: "PY2"
+premium: true
 ---
 
 # 🔧 Python Functions Guide

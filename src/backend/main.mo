@@ -380,6 +380,7 @@ persistent actor AskalaBackend {
             code = course.code;
             contentHash = course.contentHash;
             version = course.version;
+            is_premium = course.is_premium; // true = premium, false = free
             createdAt = now;
             updatedAt = now;
         };
@@ -400,6 +401,7 @@ persistent actor AskalaBackend {
             code = course.code;
             contentHash = course.contentHash;
             version = course.version;
+            is_premium = course.is_premium; // true = premium, false = free
             createdAt = course.createdAt;
             updatedAt = now;
         };
@@ -432,6 +434,7 @@ persistent actor AskalaBackend {
                     description = course.description;
                     code = course.code;
                     contentHash = course.contentHash;
+                    is_premium = course.is_premium;
                     version = course.version;
                     createdAt = existingCourse.createdAt;
                     updatedAt = Time.now();

@@ -42,7 +42,7 @@ class ContentHashGenerator {
                 }
             }
         });
-
+        
         return metadata;
     }
 
@@ -68,9 +68,11 @@ class ContentHashGenerator {
                 path: `src/askala_baseapp_frontend/src/content/python/${path.basename(filePath)}`,
                 hash: contentHash,
                 version: metadata.version || '1.0',
-                size: Buffer.byteLength(content, 'utf8')
+                size: Buffer.byteLength(content, 'utf8'),
+                is_premium: metadata.premium === 'true',
             };            
-
+            
+            // console.log(`🔍 Extracted metadata for ${slug}:`, metadata);
             const lessonMeta = {                
                 slug: slug,
                 title: metadata.title || slug,
@@ -78,6 +80,9 @@ class ContentHashGenerator {
                 code: metadata.code || '',
                 contentHash: contentHash,
                 version: metadata.version || '1.0',
+                // is_premium: metadata.premium || false, // Default to false if not specified
+                // javascript convert to boolean
+                is_premium: metadata.premium === 'true',
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             };
@@ -103,6 +108,7 @@ class ContentHashGenerator {
                 hash: string;
                 version: string
                 size: number;
+                premium: boolean;
                 }
 
                 export const CONTENT_REGISTRY: Record<string, ContentRegistryEntry> = ${JSON.stringify(contentRegistry, null, 2)} as const;

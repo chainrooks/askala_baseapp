@@ -4,6 +4,7 @@ name: "Python Variables"
 description: "Declaration, Value, and Type insertion"
 version: "1.0"
 code: "PY5"
+premium: true
 ---
 
 # 🧠 Python Variables
