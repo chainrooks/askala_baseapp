@@ -43,7 +43,7 @@ Askala uses Internet Identity (II), a privacy-preserving passwordless authentica
 The lesson metadata, user profiles, and progress tracking are all stored and managed directly in Motoko-based canister smart contracts—running on-chain with low latency and high throughput.Lessons are stored as structured metadata records (title, slug, tags, hash, etc.) Users’ learning history is maintained in persistent on-chain storage All updates (e.g., progress changes) are verified and recorded immutably.
 
 - **🌐 Hosting Frontend on ICP (optional/extendable)**
-While Askala currently serves the frontend from traditional infrastructure, it can be extended to serve the full React+Vite frontend directly from the chain—leveraging ICP’s low-latency, low-cost storage.
+While Askala currently serves the frontend from traditional infrastructure, it can be extended to serve the full React+Vite frontend directly from the chain—leveraging ICP’s low-latency, low-cost storage
 
 - **📡 (Upcoming) HTTP Outcalls (Optional Enhancement)**
 Askala may later integrate HTTP outcalls—allowing canisters to directly fetch external data (e.g., AI inference results or third-party content) from off-chain APIs. This can further decentralize backend logic and reduce reliance on frontend requests.
@@ -108,28 +108,20 @@ dfx deploy --network=local
 
 ## Local Dev Initiate Ledger
 
-1. **create minter as admin**
+1. **Create minter as admin**
 ```bash 
 dfx identity use minter
 export MINTER_ACCOUNT_ID=$(dfx ledger account-id)
 ```
 
-1. **Buat identity `minter` sebagai admin**
-```bash 
-dfx identity new minter
-dfx identity use minter
-export MINTER_ACCOUNT_ID=$(dfx ledger account-id)
-```
-
-2. **Buat identity default `(DevAccount)`**
+2. **Createidentity default `(DevAccount)`**
 ```bash
 dfx identity new DevAccount
 dfx identity use DevAccount
 export DEFAULT_ACCOUNT_ID=$(dfx ledger account-id)
 ```
 
-3. **Inisialisasi Ledger dengan `DevAccount`**
-makesure canister already running
+3. **Initialize Ledger with `Minter`
 ```bash
 dfx deploy --specified-id ryjl3-tyaaa-aaaaa-aaaba-cai icp_ledger_canister --argument "
 (variant {
@@ -191,9 +183,6 @@ dfx deploy --specified-id ryjl3-tyaaa-aaaaa-aaaba-cai icp_ledger_canister --argu
 ## AI Local Developement
 
 see [Askala AI Repository](https://github.com/chainrooks/askala_ai)
-
-
-
 
 ## Project Structure
 
