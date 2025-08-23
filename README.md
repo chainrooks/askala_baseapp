@@ -171,15 +171,6 @@ dfx deploy --specified-id ryjl3-tyaaa-aaaaa-aaaba-cai icp_ledger_canister --argu
 > It is important that the backend canister is up and ready to accept metadata or content changes.
 ---
 
-## Roadmap
-- [x] Implement ICP Account with LLM Chatbot
-- [ ] Build simple analytics dashboard for user engagement and lesson performance
-- [ ] Add multilingual content support (starting with Bahasa Indonesia & English)
-- [ ] Introduce freemium features, premium course tracks, and contributor token rewards.
-- [ ] Personalized tutoring via LLM with context-aware suggestions.
-- [ ] Reward learners via ICRC-1 token and issue DIP721 NFT credentials
-- [ ]  Enable discussion threads per lesson
-
 ## AI Local Developement
 
 see [Askala AI Repository](https://github.com/chainrooks/askala_ai)
