@@ -64,7 +64,10 @@ Askala leverages the ICP Ledger canister, the core blockchain component that sec
 <br/>
 <br/>
 
-This architecture uses ICP as the backend platform with several canisters: **FrontEnd**, **Lesson**, **Progress**, and **User**. React is used on the browser side as the UI. The **FrontEnd Canister** manages communication between canisters and performs HTTP outcalls to the Chat Bot, which is connected to an LLM API for AI.
+This architecture uses ICP as the backend platform with several canisters: **FrontEnd**, **Backend**. React is used on the browser side as the UI. The **FrontEnd Canister** manages communication between canisters and performs HTTP outcalls to the Chat Bot, which is connected to an LLM API for AI.
+
+## Payment Sequence Diagram
+<img src="./src/askala_baseapp_frontend/public/images/payment-sequence-diagram.png" alt="Payment Seuqence Diagram" role="presentation"/>
 
 ## Local Development Setup
 
@@ -101,10 +104,6 @@ mops sources && mops install
 dfx start --background
 ```
 
-5. **Deploy Local**
-```sh
-dfx deploy --network=local
-```
 
 ## Local Dev Initiate Ledger
 
@@ -144,6 +143,13 @@ dfx deploy --specified-id ryjl3-tyaaa-aaaaa-aaaba-cai icp_ledger_canister --argu
   }
 })
 "
+```
+
+## Deploy All Canister
+
+1. **Deploy Local**
+```sh
+dfx deploy --network=local
 ```
 
 ## Content & Deployment Workflow
