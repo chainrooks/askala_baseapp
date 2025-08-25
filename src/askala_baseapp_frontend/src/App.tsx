@@ -69,9 +69,9 @@ function App() {
   }
 
   if (!authState.isAuthenticated) {
-    // return <HomePage />
-    // return <LoginPage state={authState} setState={setAuthState} />
-    return <LandingPage />
+    return <HomePage />
+    //return <LoginPage state={authState} setState={setAuthState} />
+    //return <LandingPage />
   }
 
   return (
