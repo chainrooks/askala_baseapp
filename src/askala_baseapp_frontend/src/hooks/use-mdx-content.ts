@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import type { TTopicProps } from '@/types/topic'
 import { CourseMetadata } from '@/section/sidebar-content'
 
-export const useMDXContent = (topic: TTopicProps | null) => {
+export const useMDXContent = (topic: CourseMetadata | undefined) => {
   const [MDXComponent, setMDXComponent] = useState<React.ComponentType | null>(
     null
   )
@@ -31,7 +31,7 @@ export const useMDXContent = (topic: TTopicProps | null) => {
           while: () => import('../content/python/while.md')
         }
 
-        const loader = contentMap[topic.id]
+        const loader = contentMap[topic.slug]
 
         if (loader) {
           const module = await loader()

@@ -173,6 +173,7 @@ export const HomePage = () => {
               </div>
             </div>
 
+            {/* Course Cards Container */}
             <div className="mx-auto px-4 max-w-7xl">
               <div className="relative overflow-hidden">
                 <div
@@ -208,6 +209,7 @@ export const HomePage = () => {
                           className={`absolute inset-0 opacity-20 ${course.image} group-hover:opacity-30 transition-opacity duration-300`}
                         ></div>
 
+                        {/* Popular badge */}
                         {course.students > 1000 && (
                           <div className="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs font-bold rounded-full flex items-center gap-1">
                             <Star className="w-3 h-3" />
@@ -377,7 +379,7 @@ export const HomePage = () => {
                         )}
                       </div>
                     </div>
-                    <div className='bg-gray-500 h-px mx-auto mb-6 rounded-full'></div>
+                    <div className="bg-gray-500 h-px mx-auto mb-6 rounded-full"></div>
 
                     <ul className="space-y-3 mb-6">
                       {plan.features.map((feature, featureIndex) => (
@@ -386,7 +388,9 @@ export const HomePage = () => {
                           className="flex items-center space-x-3 text-left"
                         >
                           <Check className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                          <span className="text-gray-400 text-sm">{feature}</span>
+                          <span className="text-gray-400 text-sm">
+                            {feature}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -482,63 +486,6 @@ export const HomePage = () => {
                         />
                       ))}
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Course Chapter Section */}
-        <section className="py-6 bg-gray-900">
-          <div className="container mx-auto px-4">
-            <h1 className="text-3xl font-bold text-white mb-8 text-center">
-              Our Learning Classes
-            </h1>
-            <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
-              <div className="lg:w-2/3flex items-center justify-center">
-                <div className="elative bg-gradient-to-br from-[#1F2937] to-[#111827] backdrop-blur-sm border border-gray-700 transition-all ease-in-out duration-300 transform rounded-3xl p-8 shadow-2xl overflow-hidden min-h-[550px] w-full group card-hover shine-effect">
-                  <div className="absolute inset-0 bg-[url('/images/3d-asset-askala-box.webp')] bg-contain bg-center bg-no-repeat opacity-20"></div>
-                  <div className="absolute inset-0 opacity-20 bg-gradient-to-br from-gray-700 to-gray-900 group-hover:opacity-30 transition-opacity duration-300"></div>{' '}
-                  <div className="space-y-6">
-                    <div className="justify-center align-center mb-6">
-                      <div className="flex items-center space-x-4 mb-4">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
-                            <BookMarked className="w-8 h-8 text-blue-600" />
-                          </div>
-                          <h1 className="text-xl font-bold text-white">
-                            {pythonCourse.name}
-                          </h1>
-                        </div>
-                      </div>
-                      <p className="text-white mb-4">
-                        {pythonCourse.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Panel - Course Menu */}
-              <div className="lg:w-1/3">
-                <div className="bg-gray-800 rounded-2xl border-4 border-gray-700 h-full">
-                  <h2 className="text-xl font-semibold text-white align-center p-4 border-b border-gray-700">
-                    {pythonCourse.name} Topics
-                  </h2>
-                  <div className="space-y-3 pt-2 p-6 overflow-y-auto max-h-[460px]">
-                    {pythonCourse.topics.map((course, index) => (
-                      <div className="flex items-center space-x-3 hover:bg-gray-700 rounded-lg transition-all duration-200 bg-gray-600 px-2 py-2 cursor-default">
-                        <div className="px-2">
-                          <h3 className="text-sm font-medium text-white">
-                            {course.title}
-                          </h3>
-                          <p className="text-xs text-gray-400 mt-1">
-                            {course.description} topics
-                          </p>
-                        </div>
-                      </div>
-                    ))}
                   </div>
                 </div>
               </div>

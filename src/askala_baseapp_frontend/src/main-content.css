@@ -1,0 +1,65 @@
+.premium-content-blur {
+  overflow-y: hidden;
+  filter: blur(12px);
+  animation: blurIn 0.5s ease-out;
+}
+
+.premium-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
+  pointer-events: none;
+  animation: fadeInOverlay 0.6s ease-out;
+}
+
+.premium-content-overlay {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  max-width: 550px;
+  align-items: center;
+  text-align: center;
+  z-index: 10;
+  animation: slideUpFadeIn 0.8s ease-out 0.2s both;
+}
+
+@keyframes blurIn {
+  from {
+    filter: blur(0px);
+  }
+  to {
+    filter: blur(12px);
+  }
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-overlay-animation {
+  animation: fadeInOverlay 0.3s ease-out forwards;
+}
+
+.modal-blur-animation {
+  animation: blurIn 0.6s ease-out forwards;
+}
+
+.modal-content-animation {
+  animation: slideUpFadeIn 0.1s ease-out forwards;
+}

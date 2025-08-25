@@ -3,9 +3,19 @@ import Navbar from './components/navbar'
 import Footer from './components/footer'
 import SecondaryButton from './components/button/secondary'
 import InfoCard from './components/home/info-card'
-import { Sparkles } from 'lucide-react'
+import { Check, Sparkles } from 'lucide-react'
+import { pricing } from '@/data/pricing'
+import CourseSection from './course/course-section'
 
-export default function LandingPage() {
+interface LandingPageProps {
+  onNavigateLogin?: () => void
+}
+
+export default function LandingPage({ onNavigateLogin }: LandingPageProps) {
+  const handleStartClick = () => {
+    if (onNavigateLogin) onNavigateLogin()
+  }
+
   return (
     <>
       <Navbar />
@@ -48,7 +58,9 @@ export default function LandingPage() {
                     scale-105 group-hover:scale-100
                 "
               />
-              <SecondaryButton>Start for free</SecondaryButton>
+              <SecondaryButton onClick={handleStartClick}>
+                Start for free
+              </SecondaryButton>
             </div>
           </div>
         </section>
@@ -169,6 +181,90 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+
+        <section className="py-20" id="pricing">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Pricing
+              </h1>
+              <p className="text-xl text-white mb-8">
+                Choose the right package for your AI learning needs and start
+                optimizing today
+              </p>
+              <div className="inline-flex items-center space-x-4 text-lg">
+                <span className="font-semibold text-white0">
+                  AI Learning for Everyone
+                </span>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {pricing.map((plan, index) => (
+                <div
+                  key={index}
+                  className={`relative flex flex-col justify-between h-full p-6 rounded-2xl border-1 ${plan.popular ? 'border-[#58C2D6]' : 'border-gray-600'} shadow transition-all duration-300 hover:shadow-lg`}
+                >
+                  {plan.popular && (
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                        Most recommended
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="text-center">
+                    <div className="flex flex-col items-left">
+                      <div className="text-2xl font-semibold text-gray-100 mb-1 flex items-center gap-2">
+                        {plan.name}
+                      </div>
+
+                      <div className="flex items-baseline justify-left mb-2">
+                        <span className="text-sm text-gray-500">
+                          {plan.price}
+                        </span>
+                        {plan.period && (
+                          <span className="text-gray-500 ml-1 text-sm">
+                            {plan.period}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="bg-gray-500 h-px mx-auto mb-6 rounded-full"></div>
+
+                    <ul className="space-y-3 mb-6">
+                      {plan.features.map((feature, featureIndex) => (
+                        <li
+                          key={featureIndex}
+                          className="flex items-center space-x-3 text-left"
+                        >
+                          <Check className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                          <span className="text-gray-400 text-sm">
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="mt-auto">
+                    <button
+                      className={`w-full py-2 px-4 rounded-lg text-sm transition-all duration-200 ease-in-out ${
+                        plan.popular
+                          ? 'bg-gradient-to-r from-blue-700 to-purple-900 text-white hover:shadow-lg transform hover:scale-105'
+                          : 'border border-gray-300 text-white hover:bg-gray-500'
+                      }`}
+                    >
+                      {plan.cta}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <CourseSection />
       </main>
       <Footer />
     </>

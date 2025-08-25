@@ -1,83 +1,64 @@
 import React from 'react'
-import type { TTopicProps } from '@/types/topic'
 import { useRef, useState, useEffect } from 'react'
-import { Brain, FileText, Loader2 } from 'lucide-react'
+import { Brain, FileText, Loader2, Lock } from 'lucide-react'
 import { useMDXContent } from '@/hooks/use-mdx-content'
 import { CourseMetadata } from './sidebar-content'
 import '../markdown.css'
+import '../main-content.css'
+import PrimaryButton from './components/button/primary'
+import { InternetIdentityState } from '@/types/auth'
 
 interface MainContentProps {
-  selectedTopic: CourseMetadata | null
+  selectedTopic: CourseMetadata | undefined
+  authState: InternetIdentityState
+  setModalPayment?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-interface AlternativeMainContentProps {
-  selectedTopic: TTopicProps | null
-}
-
-// export function MDXWithSelection({ MDXComponent }: { MDXComponent: React.ComponentType }) {
-//   const containerRef = useRef<HTMLDivElement>(null);
-//   const [popup, setPopup] = useState<{ text: string; x: number; y: number } | null>(null);
-
-//   useEffect(() => {
-//     const handleMouseUp = (e: MouseEvent) => {
-//       const selection = window.getSelection();
-//       if (!selection) return;
-
-//       const selectedText = selection.toString().trim();
-//       if (!selectedText) {
-//         setPopup(null);
-//         return;
-//       }
-
-//       const range = selection.getRangeAt(0);
-//       const rect = range.getBoundingClientRect();
-
-//       setPopup({
-//         text: selectedText,
-//         x: rect.left + window.scrollX - 170,
-//         y: rect.top + window.scrollY - 170
-//       });
-//     };
-
-//     document.addEventListener("mouseup", handleMouseUp);
-//     return () => document.removeEventListener("mouseup", handleMouseUp);
-//   }, []);
-
-//   return (
-//     <div ref={containerRef} className="relative prose prose-invert prose-slate max-w-none">
-//       <MDXComponent />
-
-//       {popup && (
-//         <div
-//           style={{
-//             position: "absolute",
-//             top: popup.y,
-//             left: popup.x,
-//             background: "#1f2937",
-//             color: "white",
-//             padding: "4px 8px",
-//             borderRadius: "6px",
-//             fontSize: "14px",
-//             cursor: "pointer",
-//             boxShadow: "0px 2px 8px rgba(0,0,0,0.3)",
-//             zIndex: 1000
-//           }}
-//           onClick={() => {
-//             alert(`You selected: ${popup.text}`);
-//             setPopup(null);
-//           }}
-//         >
-//           Want to ask this?
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-export const MainContent: React.FC<AlternativeMainContentProps> = ({
-  selectedTopic
+export const MainContent: React.FC<MainContentProps> = ({
+  selectedTopic,
+  authState,
+  setModalPayment
 }) => {
   const { MDXComponent, loading, error } = useMDXContent(selectedTopic)
+  const [isHasAccess, setIsHasAccess] = useState(false)
+  const [showPremium, setShowPremium] = useState(false)
+  const [animationKey, setAnimationKey] = useState(0)
+
+  useEffect(() => {
+    const checkHasAccess = async () => {
+      if (
+        !authState.isAuthenticated ||
+        !authState.actor ||
+        !selectedTopic?.slug ||
+        !authState.authClient
+      )
+        return
+
+      try {
+        const identity = authState.authClient.getIdentity()
+        const principal = identity.getPrincipal()
+
+        const hasAccess = await authState.actor.hasAccess(
+          principal,
+          selectedTopic.slug
+        )
+        console.log('Has Access Result', hasAccess)
+        setIsHasAccess(hasAccess)
+      } catch (err) {
+        console.error('Error checking access', err)
+        setIsHasAccess(false)
+      }
+    }
+
+    checkHasAccess()
+
+    if (selectedTopic) {
+      // Show overlay only if topic is premium AND user does NOT have access
+      setShowPremium(selectedTopic.is_premium && !isHasAccess)
+    }
+
+    setAnimationKey((prev) => prev + 1)
+  }, [selectedTopic, isHasAccess, authState.isAuthenticated, authState.actor])
 
   const getWelcomeContent = () => {
     if (!selectedTopic) {
@@ -190,7 +171,7 @@ export const MainContent: React.FC<AlternativeMainContentProps> = ({
   }
 
   return (
-    <div className="flex-1 bg-gray-900 flex flex-col h-full">
+    <div className="flex-1 bg-gray-900 flex flex-col h-full relative">
       <div className="border-b p-4 border-gray-700">
         <div className="flex items-center gap-3">
           <Brain className="w-6 h-6 text-blue-400" />
@@ -209,11 +190,43 @@ export const MainContent: React.FC<AlternativeMainContentProps> = ({
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div
+        className={`${showPremium ? 'premium-content-blur' : 'overflow-y-auto'} flex-1`}
+      >
         <div className="p-6">
           <div className="max-w-4xl mx-auto space-y-6">{renderContent()}</div>
         </div>
       </div>
+
+      {showPremium && (
+        <>
+          <div key={`bg-${animationKey}`} className="premium-bg-overlay" />
+          <div className="absolute inset-0 flex items-center justify-center p-6">
+            <div
+              key={`content-${animationKey}`}
+              className="premium-content-overlay space-y-4"
+            >
+              <div className="relative mx-auto mb-2">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center">
+                  <Lock className="w-8 h-8 text-white" />
+                </div>
+              </div>
+              <h1 className="text-2xl font-semibold text-white">
+                You are accessing premium content.
+              </h1>
+              <p className="text-md font-normal text-white">
+                Buy this specific course to get unlimited access and boost your
+                knowledge with Askala!
+              </p>
+              <PrimaryButton
+                onClick={() => setModalPayment && setModalPayment(true)}
+              >
+                Buy Course
+              </PrimaryButton>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

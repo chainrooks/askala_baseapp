@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import type { ChatMessage } from '@/types/global'
-import type { TTopicProps } from '@/types/topic'
 import { Send, MessageCircle, Clock } from 'lucide-react'
+import { CourseMetadata } from './sidebar-content'
 
 interface ChatPanelProps {
-  selectedTopic: TTopicProps | null
+  selectedTopic: CourseMetadata | undefined
   messages: ChatMessage[]
   setMessages: (value: ChatMessage[]) => void
 }
@@ -53,7 +53,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
       id: crypto.randomUUID(),
       sender: 'user',
       content: messageContent,
-      topicId: selectedTopic.id,
+      topicId: selectedTopic.slug,
       timestamp: new Date()
     }
 
@@ -61,14 +61,19 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
     setMessages(updatedUserMessages)
 
     try {
-      const response = await fetch('http://localhost:8000/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          prompt: messageContent,
-          lesson: selectedTopic.id
-        })
-      })
+      const response = await fetch(
+        'http://askala-api-production.up.railway.app/chat',
+        {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json' 
+          },
+          body: JSON.stringify({
+            prompt: messageContent,
+            lesson: selectedTopic.id
+          })
+        }
+      )
 
       if (response.ok) {
         const data = await response.json()
@@ -77,7 +82,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           id: crypto.randomUUID(),
           sender: 'ai',
           content: data.response,
-          topicId: selectedTopic.id,
+          topicId: selectedTopic.slug,
           timestamp: new Date()
         }
 
@@ -92,7 +97,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   }
 
   const topicMessages = selectedTopic
-    ? messages.filter((msg) => msg.topicId === selectedTopic.id)
+    ? messages.filter((msg) => msg.topicId === selectedTopic.slug)
     : []
 
   return (

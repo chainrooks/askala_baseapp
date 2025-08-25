@@ -11,7 +11,7 @@ export const pricing: TPriceProps[] = [
       'Fundamental AI materials'
     ],
     cta: 'Start Free',
-    popular: false,
+    popular: false
   },
   {
     name: 'Pro',
@@ -26,7 +26,7 @@ export const pricing: TPriceProps[] = [
       'API access'
     ],
     cta: 'Choose Pro',
-    popular: true,
+    popular: true
   },
   {
     name: 'Enterprise',
@@ -40,7 +40,6 @@ export const pricing: TPriceProps[] = [
       'White-label option'
     ],
     cta: 'Contact Us',
-    popular: false,
+    popular: false
   }
 ]
-

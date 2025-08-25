@@ -4,16 +4,9 @@ import { BookOpen } from 'lucide-react'
 import { InternetIdentityState } from '@/types/auth'
 import { pythonCourse } from '@/data/courses'
 
-// export interface SidebarProps {
-//   selectedTopic: CourseMetadata | null
-//   onTopicSelect: (topic: CourseMetadata) => void
-//   onLogout: () => Promise<void> | void
-//   authState: InternetIdentityState
-// }
-
 export interface SidebarProps {
-  selectedTopic: TTopicProps | null
-  onTopicSelect: (topic: TTopicProps) => void
+  selectedTopic: CourseMetadata | undefined
+  onTopicSelect: (topic: CourseMetadata) => void
   onLogout: () => Promise<void> | void
   authState: InternetIdentityState
 }
@@ -24,6 +17,7 @@ export interface CourseMetadata {
   createdAt: bigint
   description: string
   id: string
+  is_premium: boolean
   slug: string
   title: string
   updatedAt: bigint
@@ -39,11 +33,6 @@ export const SideContent: React.FC<SidebarProps> = ({
   const [courses, setCourses] = useState<CourseMetadata[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-
-  const formatDate = (ns: bigint) => {
-    const ms = Number(ns / BigInt(1_000_000))
-    return new Date(ms).toLocaleString()
-  }
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -87,7 +76,7 @@ export const SideContent: React.FC<SidebarProps> = ({
       <div className="flex-1 overflow-y-auto">
         {loading && <>Loading...</>}
         <div className="p-4 space-y-2">
-          {pythonCourse.topics.map((topic) => {
+          {courses.map((topic) => {
             const isSelected = selectedTopic?.id === topic.id
             return (
               <button
@@ -100,11 +89,7 @@ export const SideContent: React.FC<SidebarProps> = ({
                 }`}
               >
                 <div className="font-medium text-sm">{topic.title}</div>
-                <div
-                  className={`text-xs mt-1 ${
-                    isSelected ? 'text-white' : 'text-gray-400'
-                  }`}
-                >
+                <div className="text-xs mt-1 text-gray-400">
                   {topic.description}
                 </div>
               </button>
