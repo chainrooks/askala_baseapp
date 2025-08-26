@@ -52,7 +52,7 @@ export const SideContent: React.FC<SidebarProps> = ({
     }
 
     fetchCourses()
-  }, [])
+  }, [authState.isAuthenticated, authState.actor])
 
   return (
     <div className="w-80 bg-gray-900 border-r border-gray-700 flex flex-col h-full">

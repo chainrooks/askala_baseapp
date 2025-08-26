@@ -12,48 +12,21 @@ interface MainContentProps {
   selectedTopic: CourseMetadata | undefined
   authState: InternetIdentityState
   setModalPayment?: React.Dispatch<React.SetStateAction<boolean>>
+  isHasAccess?: boolean
 }
 
 export const MainContent: React.FC<MainContentProps> = ({
   selectedTopic,
   authState,
-  setModalPayment
+  setModalPayment,
+  isHasAccess
 }) => {
   const { MDXComponent, loading, error } = useMDXContent(selectedTopic)
-  const [isHasAccess, setIsHasAccess] = useState(false)
   const [showPremium, setShowPremium] = useState(false)
   const [animationKey, setAnimationKey] = useState(0)
 
   useEffect(() => {
-    const checkHasAccess = async () => {
-      if (
-        !authState.isAuthenticated ||
-        !authState.actor ||
-        !selectedTopic?.slug ||
-        !authState.authClient
-      )
-        return
-
-      try {
-        const identity = authState.authClient.getIdentity()
-        const principal = identity.getPrincipal()
-
-        const hasAccess = await authState.actor.hasAccess(
-          principal,
-          selectedTopic.slug
-        )
-        console.log('Has Access Result', hasAccess)
-        setIsHasAccess(hasAccess)
-      } catch (err) {
-        console.error('Error checking access', err)
-        setIsHasAccess(false)
-      }
-    }
-
-    checkHasAccess()
-
     if (selectedTopic) {
-      // Show overlay only if topic is premium AND user does NOT have access
       setShowPremium(selectedTopic.is_premium && !isHasAccess)
     }
 

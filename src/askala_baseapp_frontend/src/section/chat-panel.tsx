@@ -70,7 +70,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           },
           body: JSON.stringify({
             prompt: messageContent,
-            lesson: selectedTopic.id
+            lesson: selectedTopic.slug
           })
         }
       )

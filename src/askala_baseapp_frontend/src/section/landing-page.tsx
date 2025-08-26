@@ -184,7 +184,6 @@ export default function LandingPage({ onNavigateLogin }: LandingPageProps) {
         <PricingSection />
 
         <ICPPriceSection />
-
       </main>
       <Footer />
     </>
