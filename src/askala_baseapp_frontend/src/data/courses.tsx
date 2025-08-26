@@ -67,8 +67,7 @@ export const features = [
   {
     icon: <BookOpen className="w-6 h-6" />,
     title: 'Visual Report',
-    description:
-      'Get deep insights into your AI skills development',
+    description: 'Get deep insights into your AI skills development',
     image: 'bg-gradient-to-br from-green-100 to-green-200'
   },
   {
@@ -84,7 +83,8 @@ export const learningClass = [
   {
     icon: <Sparkles className="w-6 h-6" />,
     title: 'Adaptive Learning Class',
-    description: 'AI that adapts learning materials to your learning style and abilities',
+    description:
+      'AI that adapts learning materials to your learning style and abilities',
     image: 'bg-gradient-to-br from-blue-500 to-cyan-500',
     category: 'AI Learning',
     difficulty: 'Beginner',
@@ -98,7 +98,8 @@ export const learningClass = [
   {
     icon: <BarChart3 className="w-6 h-6" />,
     title: 'Interactive Dashboard Class',
-    description: 'Monitor your learning progress with easy-to-understand data visualizations',
+    description:
+      'Monitor your learning progress with easy-to-understand data visualizations',
     image: 'bg-gradient-to-br from-purple-500 to-pink-500',
     category: 'Data Visualization',
     difficulty: 'Intermediate',
@@ -126,7 +127,8 @@ export const learningClass = [
   {
     icon: <Brain className="w-6 h-6" />,
     title: 'Smart Curriculum Generator Class',
-    description: 'Automatic recommendations for the most effective AI learning paths',
+    description:
+      'Automatic recommendations for the most effective AI learning paths',
     image: 'bg-gradient-to-br from-orange-500 to-red-500',
     category: 'AI Learning',
     difficulty: 'Advanced',

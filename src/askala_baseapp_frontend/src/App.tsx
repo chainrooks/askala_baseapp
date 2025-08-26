@@ -7,10 +7,9 @@ import { ChatPanel } from './section/chat-panel'
 import { InternetIdentityState } from './types/auth'
 import { AuthClient } from '@dfinity/auth-client'
 import LoginPage from './section/auth/login-page'
-import { HomePage } from './section/HomePage'
 import Modal from './section/components/common/modal'
 
-//import { AccountIdentifier } from '@dfinity/ledger-icp'
+import { AccountIdentifier } from '@dfinity/ledger-icp'
 import { HttpAgent, Actor } from '@dfinity/agent'
 import { Buffer } from 'buffer'
 
@@ -466,6 +465,7 @@ function App() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [modalPaymentOpen, setModalPaymentOpen] = useState(false)
   const [selectedTopic, setSelectedTopic] = useState<CourseMetadata>()
+  const [isLoginPage, setIsLoginPage] = useState(false)
 
   const [authState, setAuthState] = useState<InternetIdentityState>({
     actor: undefined,
@@ -529,12 +529,10 @@ function App() {
   }
 
   if (!authState.isAuthenticated) {
-    // return <HomePage />
-    //return <LoginPage state={authState} setState={setAuthState} />
-    //return <LandingPage />
-    return <HomePage />
-    //return <LoginPage state={authState} setState={setAuthState} />
-    //return <LandingPage />
+    if (isLoginPage) {
+      return <LoginPage state={authState} setState={setAuthState} />
+    }
+    return <LandingPage onNavigateLogin={() => setIsLoginPage(true)} />
   }
 
   return (

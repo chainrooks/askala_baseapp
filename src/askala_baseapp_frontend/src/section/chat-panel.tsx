@@ -65,8 +65,8 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
         'http://askala-api-production.up.railway.app/chat',
         {
           method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json' 
+          headers: {
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             prompt: messageContent,
