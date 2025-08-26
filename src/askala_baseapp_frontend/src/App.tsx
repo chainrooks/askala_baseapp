@@ -10,7 +10,7 @@ import LoginPage from './section/auth/login-page'
 import { HomePage } from './section/HomePage'
 import Modal from './section/components/common/modal'
 
-import { AccountIdentifier } from '@dfinity/ledger-icp'
+//import { AccountIdentifier } from '@dfinity/ledger-icp'
 import { HttpAgent, Actor } from '@dfinity/agent'
 import { Buffer } from 'buffer'
 
@@ -532,9 +532,9 @@ function App() {
     // return <HomePage />
     //return <LoginPage state={authState} setState={setAuthState} />
     //return <LandingPage />
-    // return <HomePage />
-    return <LoginPage state={authState} setState={setAuthState} />
-    // return <LandingPage />
+    return <HomePage />
+    //return <LoginPage state={authState} setState={setAuthState} />
+    //return <LandingPage />
   }
 
   return (

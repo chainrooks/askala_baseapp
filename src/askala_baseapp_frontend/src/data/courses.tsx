@@ -52,30 +52,30 @@ export const pythonCourse: TCourseProps = {
 export const features = [
   {
     icon: <Target className="w-6 h-6" />,
-    title: 'Pembelajaran Adaptif',
+    title: 'Adaptive Learning',
     description:
-      'AI yang menyesuaikan materi pembelajaran dengan gaya belajar dan kemampuan Anda',
+      'AI that adapts learning materials to your learning style and abilities',
     image: 'bg-gradient-to-br from-blue-100 to-blue-200'
   },
   {
     icon: <BarChart3 className="w-6 h-6" />,
-    title: 'Dashboard Interaktif',
+    title: 'Interactive Dashboard',
     description:
-      'Pantau progress pembelajaran Anda dengan visualisasi data yang mudah dipahami',
+      'Monitor your learning progress with easy-to-understand data visualization',
     image: 'bg-gradient-to-br from-purple-100 to-purple-200'
   },
   {
     icon: <BookOpen className="w-6 h-6" />,
-    title: 'Laporan Visual',
+    title: 'Visual Report',
     description:
-      'Dapatkan insight mendalam tentang perkembangan kemampuan AI Anda',
+      'Get deep insights into your AI skills development',
     image: 'bg-gradient-to-br from-green-100 to-green-200'
   },
   {
     icon: <Brain className="w-6 h-6" />,
-    title: 'Generator Kurikulum Cerdas',
+    title: 'Smart Curriculum Generator',
     description:
-      'Rekomendasi otomatis untuk jalur pembelajaran AI yang paling efektif',
+      'Automatic recommendations for the most effective AI learning paths',
     image: 'bg-gradient-to-br from-orange-100 to-orange-200'
   }
 ]
@@ -83,115 +83,128 @@ export const features = [
 export const learningClass = [
   {
     icon: <Sparkles className="w-6 h-6" />,
-    title: 'Kelas Pembelajaran Adaptif',
-    description:
-      'AI yang menyesuaikan materi pembelajaran dengan gaya belajar dan kemampuan Anda',
+    title: 'Adaptive Learning Class',
+    description: 'AI that adapts learning materials to your learning style and abilities',
     image: 'bg-gradient-to-br from-blue-500 to-cyan-500',
     category: 'AI Learning',
     difficulty: 'Beginner',
-    duration: '4 minggu',
+    duration: '4 weeks',
     students: 1250,
     rating: 4.8,
-    price: 'Gratis'
+    price: 'Free',
+    priceICP: '0 ICP',
+    priceUSD: '$0'
   },
   {
     icon: <BarChart3 className="w-6 h-6" />,
-    title: 'Kelas Dashboard Interaktif',
-    description:
-      'Pantau progress pembelajaran Anda dengan visualisasi data yang mudah dipahami',
+    title: 'Interactive Dashboard Class',
+    description: 'Monitor your learning progress with easy-to-understand data visualizations',
     image: 'bg-gradient-to-br from-purple-500 to-pink-500',
     category: 'Data Visualization',
     difficulty: 'Intermediate',
-    duration: '3 minggu',
+    duration: '3 weeks',
     students: 890,
     rating: 4.6,
-    price: 'Rp 299.000'
+    price: '6 ICP',
+    priceICP: '6 ICP',
+    priceUSD: '$30'
   },
   {
     icon: <BookOpen className="w-6 h-6" />,
-    title: 'Kelas Laporan Visual',
-    description:
-      'Dapatkan insight mendalam tentang perkembangan kemampuan AI Anda',
+    title: 'Visual Report Class',
+    description: 'Get deep insights about your AI skill development progress',
     image: 'bg-gradient-to-br from-green-500 to-emerald-500',
     category: 'Analytics',
     difficulty: 'Intermediate',
-    duration: '2 minggu',
+    duration: '2 weeks',
     students: 675,
     rating: 4.7,
-    price: 'Rp 199.000'
+    price: '4 ICP',
+    priceICP: '4 ICP',
+    priceUSD: '$20'
   },
   {
     icon: <Brain className="w-6 h-6" />,
-    title: 'Kelas Generator Kurikulum Cerdas',
-    description:
-      'Rekomendasi otomatis untuk jalur pembelajaran AI yang paling efektif',
+    title: 'Smart Curriculum Generator Class',
+    description: 'Automatic recommendations for the most effective AI learning paths',
     image: 'bg-gradient-to-br from-orange-500 to-red-500',
     category: 'AI Learning',
     difficulty: 'Advanced',
-    duration: '6 minggu',
+    duration: '6 weeks',
     students: 432,
     rating: 4.9,
-    price: 'Rp 499.000'
+    price: '10 ICP',
+    priceICP: '10 ICP',
+    priceUSD: '$50'
   },
   {
     icon: <Play className="w-6 h-6" />,
-    title: 'Kelas Pembelajaran Interaktif',
-    description:
-      'Pantau progress pembelajaran Anda dengan interaksi yang menyenangkan',
+    title: 'Interactive Learning Class',
+    description: 'Monitor your learning progress with fun interactions',
     image: 'bg-gradient-to-br from-yellow-500 to-orange-500',
     category: 'Interactive',
     difficulty: 'Beginner',
-    duration: '3 minggu',
+    duration: '3 weeks',
     students: 1100,
     rating: 4.5,
-    price: 'Rp 149.000'
+    price: '3 ICP',
+    priceICP: '3 ICP',
+    priceUSD: '$15'
   },
   {
     icon: <Target className="w-6 h-6" />,
-    title: 'Kelas Membuat Proyek',
-    description: 'Belajar membuat proyek yang sesuai dengan kebutuhan Anda',
+    title: 'Project Creation Class',
+    description: 'Learn to create projects that suit your needs',
     image: 'bg-gradient-to-br from-pink-500 to-rose-500',
     category: 'Project Based',
     difficulty: 'Intermediate',
-    duration: '5 minggu',
+    duration: '5 weeks',
     students: 756,
     rating: 4.8,
-    price: 'Rp 399.000'
+    price: '8 ICP',
+    priceICP: '8 ICP',
+    priceUSD: '$40'
   },
   {
     icon: <ChevronRight className="w-6 h-6" />,
-    title: 'Kelas Meningkatkan Kemampuan',
-    description: 'Meningkatkan kemampuan Anda dengan latihan yang sesuai',
+    title: 'Skill Enhancement Class',
+    description: 'Improve your skills with appropriate exercises',
     image: 'bg-gradient-to-br from-red-500 to-pink-500',
     category: 'Skill Development',
     difficulty: 'All Levels',
-    duration: '4 minggu',
+    duration: '4 weeks',
     students: 923,
     rating: 4.6,
-    price: 'Rp 249.000'
+    price: '5 ICP',
+    priceICP: '5 ICP',
+    priceUSD: '$25'
   },
   {
     icon: <Cat className="w-6 h-6" />,
-    title: 'Kelas Membuat AI Sendiri',
-    description: 'Belajar membuat AI sendiri dengan bimbingan yang ahli',
+    title: 'Build Your Own AI Class',
+    description: 'Learn to create your own AI with expert guidance',
     image: 'bg-gradient-to-br from-indigo-500 to-purple-500',
     category: 'AI Development',
     difficulty: 'Advanced',
-    duration: '8 minggu',
+    duration: '8 weeks',
     students: 345,
     rating: 4.9,
-    price: 'Rp 699.000'
+    price: '14 ICP',
+    priceICP: '14 ICP',
+    priceUSD: '$70'
   },
   {
     icon: <Github className="w-6 h-6" />,
-    title: 'Kelas Membuat Repository',
-    description: 'Belajar membuat repository yang sesuai dengan kebutuhan Anda',
+    title: 'Repository Creation Class',
+    description: 'Learn to create repositories that suit your needs',
     image: 'bg-gradient-to-br from-gray-700 to-gray-900',
     category: 'Development',
     difficulty: 'Beginner',
-    duration: '2 minggu',
+    duration: '2 weeks',
     students: 1456,
     rating: 4.7,
-    price: 'Gratis'
+    price: 'Free',
+    priceICP: '0 ICP',
+    priceUSD: '$0'
   }
 ]
