@@ -4,6 +4,7 @@ name: "While Loop"
 description: "Determining condition in while loop"
 version: "1.0"
 code: "PY6"
+premium: false
 ---
 
 # 🔄 Python While Loops Guide

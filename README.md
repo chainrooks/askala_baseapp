@@ -16,8 +16,8 @@
 ## Table of Contents
 
 - [Features](#features)
-- [ICP Building Blocks Used](#icp-building-blocks-used)
-- [Technical Architecture](#technical-architecture)
+- [ICP Building Blocks Used](#icp-building-blocks-used)x
+- [Technical Architecture](#technical-architecture)v
 - [Overview](#overview)
 - [Local Development Setup](#local-development-setup)
 - [Content & Deployment Workflow](#content--deployment-workflow)
@@ -43,10 +43,15 @@ Askala uses Internet Identity (II), a privacy-preserving passwordless authentica
 The lesson metadata, user profiles, and progress tracking are all stored and managed directly in Motoko-based canister smart contracts—running on-chain with low latency and high throughput.Lessons are stored as structured metadata records (title, slug, tags, hash, etc.) Users’ learning history is maintained in persistent on-chain storage All updates (e.g., progress changes) are verified and recorded immutably.
 
 - **🌐 Hosting Frontend on ICP (optional/extendable)**
-While Askala currently serves the frontend from traditional infrastructure, it can be extended to serve the full React+Vite frontend directly from the chain—leveraging ICP’s low-latency, low-cost storage.
+While Askala currently serves the frontend from traditional infrastructure, it can be extended to serve the full React+Vite frontend directly from the chain—leveraging ICP’s low-latency, low-cost storage
 
 - **📡 (Upcoming) HTTP Outcalls (Optional Enhancement)**
 Askala may later integrate HTTP outcalls—allowing canisters to directly fetch external data (e.g., AI inference results or third-party content) from off-chain APIs. This can further decentralize backend logic and reduce reliance on frontend requests.
+
+- **💸 ICP Ledger**
+Askala leverages the ICP Ledger canister, the core blockchain component that securely records balances, transfers, and token history on-chain.
+➡️ This enables transparent handling of learning credits or tokenized rewards for students—where minting, transfers, and fees are immutably verified by the ledger canister with the same security guarantees as ICP itself
+
 
 ## Technical Architecture
 
@@ -55,18 +60,21 @@ Askala may later integrate HTTP outcalls—allowing canisters to directly fetch 
   <a href="#">
     <img src="./src/askala_baseapp_frontend/public/images/techical-architecture.png" alt="ASKALA Logo" role="presentation"/>
   </a>
-
+  
 <br/>
 <br/>
 
-This architecture uses ICP as the backend platform with several canisters: **FrontEnd**, **Lesson**, **Progress**, and **User**. React is used on the browser side as the UI. The **FrontEnd Canister** manages communication between canisters and performs HTTP outcalls to the Chat Bot, which is connected to an LLM API for AI.
+This architecture uses ICP as the backend platform with several canisters: **FrontEnd**, **Backend**. React is used on the browser side as the UI. The **FrontEnd Canister** manages communication between canisters and performs HTTP outcalls to the Chat Bot, which is connected to an LLM API for AI.
+
+## Payment Sequence Diagram
+<img src="./src/askala_baseapp_frontend/public/images/payment-sequence-diagram.png" alt="Payment Seuqence Diagram" role="presentation"/>
 
 ## Local Development Setup
 
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v22+)
-- [DFX SDK](https://internetcomputer.org/docs/current/developer-docs/setup/install) (for ICP development)
+- [DFX SDK](https://internetcomputer.org/docs/current/developer-docs/setup/install) (for ICP development) (v0.28)
 - [npm](https://www.npmjs.com/) (v11+)
 - [mops](https://internetcomputer.org/docs/tutorials/developer-liftoff/level-3/3.1-package-managers) ()
 
@@ -96,7 +104,50 @@ mops sources && mops install
 dfx start --background
 ```
 
-5. **Deploy Local**
+
+## Local Dev Initiate Ledger
+
+1. **Create minter as admin**
+```bash 
+dfx identity use minter
+export MINTER_ACCOUNT_ID=$(dfx ledger account-id)
+```
+
+2. **Createidentity default `(DevAccount)`**
+```bash
+dfx identity new DevAccount
+dfx identity use DevAccount
+export DEFAULT_ACCOUNT_ID=$(dfx ledger account-id)
+```
+
+3. **Initialize Ledger with `Minter`
+```bash
+dfx deploy --specified-id ryjl3-tyaaa-aaaaa-aaaba-cai icp_ledger_canister --argument "
+(variant {
+  Init = record {
+    minting_account = \"${MINTER_ACCOUNT_ID}\";
+    initial_values = vec {
+      record {
+        \"${DEFAULT_ACCOUNT_ID}\";
+        record {
+          e8s = 10_000_000_000 : nat64;
+        };
+      };
+    };
+    send_whitelist = vec {};
+    transfer_fee = opt record {
+      e8s = 10_000 : nat64;
+    };
+    token_symbol = opt \"LICP\";
+    token_name = opt \"Local ICP\";
+  }
+})
+"
+```
+
+## Deploy All Canister
+
+1. **Deploy Local**
 ```sh
 dfx deploy --network=local
 ```
@@ -126,27 +177,13 @@ dfx deploy --network=local
 > It is important that the backend canister is up and ready to accept metadata or content changes.
 ---
 
-## Roadmap
-- [x] Implement ICP Account with LLM Chatbot
-- [ ] Build simple analytics dashboard for user engagement and lesson performance
-- [ ] Add multilingual content support (starting with Bahasa Indonesia & English)
-- [ ] Introduce freemium features, premium course tracks, and contributor token rewards.
-- [ ] Personalized tutoring via LLM with context-aware suggestions.
-- [ ] Reward learners via ICRC-1 token and issue DIP721 NFT credentials
-- [ ]  Enable discussion threads per lesson
-
 ## AI Local Developement
 
 see [Askala AI Repository](https://github.com/chainrooks/askala_ai)
 
-
-
-
 ## Project Structure
 
-- `src/learning_content/` – Motoko learning content canister code
-- `src/progress/` – Motoko progess canister code
-- `src/user_management/` – Motoko user management canister code
+- `src/backend/` – Askala Backend Code
 - `src/askala_baseapp_frontend/` – React frontend code
 - `build-scripts/` – Scripts for content registry and deployment
 - `deployment/` – Generated lesson metadata for backend

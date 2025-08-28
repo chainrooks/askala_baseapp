@@ -4,6 +4,7 @@ name: "For Loop"
 description: "Loops, conditionals, and exception handling using for loop"
 version: "1.0"
 code: "PY1"
+premium: true
 ---
 
 # 🔁 Python For Loops Guide

@@ -4,6 +4,7 @@ name: "Python List"
 description: "Manipulate List in Python"
 version: "1.0"
 code: "PY4"
+premium: true
 ---
 
 # 📋 Python Lists Guide

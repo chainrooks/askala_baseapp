@@ -1,23 +1,22 @@
-import Types "../learning_content/types";
-import TypesUser "../user_management/types";
+import Principal "mo:base/Principal";
 import Time "mo:base/Time";
 
-module {
-    public type UserProgress = {
-        lessonId: Types.LessonMetadata;
-        userId: TypesUser.User;
+module ProgressType {
+    public type UserProgress = {        
+        courseId: Text;        
+        userId: Principal;
         progress: Nat;
         lastUpdated: Time.Time;
     };
 
     public type UserProgressInput = {
-        lessonId: Text;
+        courseId: Text;
         userId: Principal;
         progress: Nat;
     };
 
     public type GetUserProgressInput = {
-        lessonId: Text;
+        courseId: Text;
         userId: Principal;        
     };
 }

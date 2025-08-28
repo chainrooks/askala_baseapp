@@ -4,7 +4,7 @@ import { execSync } from 'child_process';
 class MotokoDeployment {
     constructor() {
         this.metadataFile = 'deployment/lesson-metadata.json';
-        this.canisterName = 'learning_content';
+        this.canisterName = 'backend';
         this.network = process.env.DFX_NETWORK || 'local';
     }
 
@@ -49,7 +49,7 @@ class MotokoDeployment {
             'dfx', 'canister', 'call',
             '--network', this.network,
             this.canisterName,
-            'bulkUpdateOrCreateLessonMetadata',
+            'bulkUpdateOrCreateCourse',
             `'(${candidArg})'`
         ].join(' ');
 
@@ -100,6 +100,7 @@ class MotokoDeployment {
         code = "${lesson.code}";
         description = "${lesson.description}";
         contentHash = "${lesson.contentHash}";
+        is_premium = ${lesson.is_premium};
         version = "${lesson.version}";
         createdAt = "${lesson.createdAt}";
         updatedAt = "${lesson.updatedAt}";
@@ -114,6 +115,7 @@ class MotokoDeployment {
             description = "${lesson.description}";
             contentHash = "${lesson.contentHash}";
             version = "${lesson.version}";
+            is_premium = ${lesson.is_premium};
             createdAt = "${lesson.createdAt}";
             updatedAt = "${lesson.updatedAt}";
         }`;
@@ -128,6 +130,7 @@ class MotokoDeployment {
             code : lesson.code,
             contentHash: lesson.contentHash,
             version: lesson.version,
+            is_premium: lesson.is_premium,
             createdAt: lesson.createdAt,
             updatedAt: lesson.updatedAt
         }));

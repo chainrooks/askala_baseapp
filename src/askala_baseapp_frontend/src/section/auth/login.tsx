@@ -1,19 +1,19 @@
-import { Brain, Globe, Sparkles } from "lucide-react";
-import type { TLogin } from "@/types/auth";
+import { Brain, Globe, Sparkles } from 'lucide-react'
+import type { TLogin } from '@/types/auth'
 
 export default function Login({
   onLogin,
-  className = "",
+  className = '',
   isLoading = false,
-  error,
+  error
 }: TLogin) {
   const handleLogin = async () => {
     try {
-      await onLogin();
+      await onLogin()
     } catch (error) {
-      console.error("Login error:", error);
+      console.error('Login error:', error)
     }
-  };
+  }
 
   return (
     <div className={`relative ${className}`}>
@@ -40,7 +40,8 @@ export default function Login({
             </h2>
             <p className="text-slate-300 leading-relaxed text-base px-2">
               Your intelligent learning companion powered by advanced AI.
-              Discover personalized knowledge through interactive conversations and adaptive learning experiences.
+              Discover personalized knowledge through interactive conversations
+              and adaptive learning experiences.
             </p>
           </div>
         </div>
@@ -80,7 +81,9 @@ export default function Login({
               </div>
               <div className="space-y-2">
                 <Sparkles className="h-6 w-6 text-purple-400 mx-auto" />
-                <p className="text-xs text-slate-400 font-medium">Personalized</p>
+                <p className="text-xs text-slate-400 font-medium">
+                  Personalized
+                </p>
               </div>
               <div className="space-y-2">
                 <Globe className="h-6 w-6 text-emerald-400 mx-auto" />
@@ -91,5 +94,5 @@ export default function Login({
         </div>
       </div>
     </div>
-  );
+  )
 }

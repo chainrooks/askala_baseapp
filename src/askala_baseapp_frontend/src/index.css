@@ -1,17 +1,18 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Quicksand:wght@300..700&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
 body {
-  font-family: sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.5rem;
   color: #ced4da;
 }
 
 pre {
   padding: 16px;
-  background-color: #1F2937;
+  background-color: #1f2937;
   border-radius: 8px;
   overflow-x: auto;
   margin-block: 16px;
@@ -73,7 +74,7 @@ form {
   align-items: baseline;
 }
 
-button[type="submit"] {
+button[type='submit'] {
   padding: 5px 20px;
   margin: 10px auto;
   float: right;
@@ -93,7 +94,7 @@ button[type="submit"] {
   display: none;
 }
 
-@theme  {
+@theme {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
